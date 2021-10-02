@@ -216,7 +216,7 @@ export default {
 			if (this.preCompleteDelete) {
 				const response = await this.preCompleteDelete(correlationId);
 				this.logger.debug('FormDialog', 'handleDeleteConfirmOk', 'response', response, correlationId);
-				if (!response || !response.success) {
+				if (this.hasFailed(response)) {
 					VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
 					return;
 				}
@@ -262,7 +262,7 @@ export default {
 			if (this.preCompleteOk) {
 				const response = await this.preCompleteOk(correlationId);
 				this.logger.debug('FormDialog', 'submit', 'response', response, correlationId);
-				if (!response || !response.success) {
+				if (this.hasFailed(response)) {
 					VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
 					return;
 				}
