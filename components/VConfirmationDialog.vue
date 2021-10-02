@@ -95,7 +95,7 @@ export default {
 			if (this.preCompleteOk) {
 				const response = await this.preCompleteOk(correlationId);
 				this.logger.debug('ConfirmationDialog', 'dialogOk', 'response', response, correlationId);
-				if (!response || !response.success) {
+				if (this.hasFailed(response)) {
 					VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
 					return;
 				}
