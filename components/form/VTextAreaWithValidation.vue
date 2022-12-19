@@ -1,62 +1,55 @@
 <template>
-	<ValidationProvider
-		ref="prv"
-		:vid="vid"
-		:name="$attrs.label"
-		:rules="rules"
-		:bail="rulesBail"
-		:immediate="true"
+	<v-textarea
+		v-model="innerValue"
+		:error-messages="errors"
+		:hide-details="hideDetails"
+		v-bind="$attrs"
+		auto-grow
+		clearable
+		@blur="blur"
 	>
-		<v-textarea
-			v-model="innerValue"
-			v-slot="{ errors, valid }"
-			:error-messages="errors"
-			:success="valid"
-			v-bind="$attrs"
-			auto-grow
-			clearable
-			v-on="$listeners"
-		/>
-	</ValidationProvider>
+		<template v-slot:append>
+			<span :class="countClass">{{ count }}</span>
+		</template>
+		<template v-slot:details>
+			<div
+				v-for="error of errorsI"
+				:key="error.$uid"
+			>
+				<strong>{{ error.$message }}</strong>
+				<small> on </small>
+				<strong>{{ error.$property }}</strong>
+			</div>
+		</template>
+	</v-textarea>
 </template>
 
 <script>
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'TextAreaWithValidation',
+	name: 'VtTextAreaWithValidation',
 	extends: baseControlEdit,
 	props: {
-		rules: {
-			type: [Object, String],
-			default: ''
+		blur: {
+			type: Function,
+			default: () => {}
 		},
-		rulesBail: {
-			type: Boolean,
-			default: true
+		change: {
+			type: Function,
+			default: () => {}
 		},
-		rulesImmediate: {
+		hideDetails: {
 			type: Boolean,
 			default: false
+		}
+	},
+	computed: {
+		count() {
+			return this.maxcount ? '(' + (this.innerValue ? this.innerValue.length : 0) + ')' : '';
 		},
-		// must be included in props
-		value: {
-			type: null,
-			default: null
-		}
-	},
-	watch: {
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		this.initValue(this.value);
-	},
-	methods: {
-		validation() {
-			return this.$refs.prv;
+		countClass() {
+			return (this.maxcount && !String.isNullOrEmpty(this.innerValue) ? this.innerValue.length > this.maxcount ? 'negative ' : '' : '') + 'title-body2';
 		}
 	}
 };

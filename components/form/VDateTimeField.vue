@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import VDateTimeFieldBase from './VDateTimeFieldBase';
 
 export default {
-	name: 'DatetimePicker',
+	name: 'VtDatetimePicker',
 	extends: VDateTimeFieldBase,
 	methods: {
 		convert(value) {

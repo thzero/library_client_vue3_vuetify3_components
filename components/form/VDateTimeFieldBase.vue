@@ -118,6 +118,10 @@ export default {
 			type: String,
 			default: DEFAULT_CANCEL_TEXT
 		},
+		change: {
+			type: Function,
+			default: () => {}
+		},
 		clearText: {
 			type: String,
 			default: DEFAULT_CLEAR_TEXT
@@ -159,6 +163,10 @@ export default {
 		},
 		timeFormat: {
 			type: String,
+			default: null
+		},
+		timePickerProps: {
+			type: Object,
 			default: null
 		},
 		timePickerProps: {
@@ -249,8 +257,10 @@ export default {
 		init(value) {
 		},
 		okHandler() {
-			const output = this.innerOutputType === OUTPUT_TYPE_DATE ? this.getOutputDateTime(this.selectedDateTime) : this.getOutputTimestamp(this.selectedDateTime);
+			const output = this.innerOutputType == OUTPUT_TYPE_DATE ? this.getOutputDateTime(this.selectedDateTime) : this.getOutputTimestamp(this.selectedDateTime);
 			this.$emit('input', output);
+			if (this.change)
+				this.change();
 			this.resetPicker();
 		},
 		resetPicker() {

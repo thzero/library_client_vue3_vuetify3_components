@@ -12,7 +12,7 @@
 
 <script>
 export default {
-	name: 'ServerErrorDisplay',
+	name: 'VtServerErrorDisplay',
 	props: {
 		// must be included in props
 		value: {

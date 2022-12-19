@@ -8,22 +8,23 @@
 	>
 		<v-select
 			v-model="innerValue"
-			v-slot="{ errors, valid }"
+			slot-scope="{ errors, valid }"
 			:error-messages="errors"
 			:success="valid"
 			:items="innerItems"
 			:label="label"
 			item-text="name"
 			item-value="id"
+			@change="change"
 		/>
 	</ValidationProvider>
 </template>
 
 <script>
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'SelectAutoCompleteWithValidation',
+	name: 'VtSelectAutoCompleteWithValidation',
 	extends: baseControlEdit,
 	props: {
 		rules: {
@@ -37,6 +38,10 @@ export default {
 		rulesImmediate: {
 			type: Boolean,
 			default: false
+		},
+		change: {
+			type: Function,
+			default: () => {}
 		},
 		items: {
 			type: [Object, Array],

@@ -5,7 +5,7 @@ import { format, parse } from 'date-fns';
 import VDateTimeFieldBase from './VDateTimeFieldBase';
 
 export default {
-	name: 'DatetimePicker',
+	name: 'VtDatetimePicker',
 	extends: VDateTimeFieldBase,
 	methods: {
 		convert(value) {

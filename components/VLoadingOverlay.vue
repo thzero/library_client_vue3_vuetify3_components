@@ -1,66 +1,66 @@
 <template>
-	<div>
-	</div>
+	<v-overlay
+		opacity="1.0"
+		z-index="5"
+		:value="!signal"
+	>
+		<v-container>
+			<v-row
+				justify="center"
+				class="mb-8"
+			>
+				<v-img
+					src="/icons/icon.png"
+					:width="imageWidth"
+				/>
+			</v-row>
+			<v-row justify="center">
+				<v-progress-circular
+					indeterminate
+					:size="progressSize"
+				/>
+			</v-row>
+			<v-row justify="center">
+				<span class="headline pt-8">{{ $t('messages.loading') }}</span>
+			</v-row>
+		</v-container>
+	</v-overlay>
 </template>
 
 <script>
-import { computed, onBeforeUnmount, watch } from 'vue';
-import { useQuasar } from 'quasar';
+import { computed } from 'vue';
 
-import GlobalUtility from '@thzero/library_client/utility/global';
-
-import baseLoadingOverlay from './baseLoadingOverlay';
+import VueUtility from '@thzero/library_client_vue3/utility/index';
 
 export default {
-	name: 'LoadingOverlay',
-	extends: baseLoadingOverlay,
-	setup (props) {
-		const $q = useQuasar();
-		let timer = null;
-
-		const close = () => {
-			if (timer !== null) {
-				clearTimeout(timer);
-				$q.loading.hide();
-				timer = null;
-			};
-		};
-
-		if (props.timeout) {
-			onBeforeUnmount(() => close);
+	name: 'VtLoadingOverlay',
+	props: {
+		signal: {
+			type: Boolean,
+			default: false
 		}
-
-		const displayMessage = computed(() => {
-			return !String.isNullOrEmpty(props.message) ? props.message : GlobalUtility.$trans.t('messages.loading');
+	},
+	setup(props) {
+		const imageWidth = computed(() => {
+			return VueUtility.overlayImageWidth();
+		});
+		const progressSize = computed(() => {
+			return VueUtility.overlayProgressSize();
 		});
 
-		const signalI = computed(() => {
-			return props.signal;
-		});
-
-		watch(signalI, (value, prevValue) => {
-			if (value) {
-				$q.loading.show({
-					message: displayMessage
-				});
-
-				if (props.timeout) {
-					timer = setTimeout(() => {
-						$q.loading.hide();
-						timer = null;
-					}, props.timeout);
-				}
-
-				return;
-			}
-
-			close();
-		});
-
-		return Object.assign(baseLoadingOverlay.setup(props), {
-			displayMessage
-		});
-	}
+		return {
+			imageWidth,
+			progressSize
+		};
+	},
+	// computed: {
+	// 	imageWidth() {
+	// 		return VueUtility.overlayImageWidth();
+	// 	},
+	// 	progressSize() {
+	// 		return VueUtility.overlayProgressSize();
+	// 	}
+	// }
 };
 </script>
 

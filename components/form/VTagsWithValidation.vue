@@ -1,44 +1,37 @@
 <template>
-	<ValidationProvider
-		:vid="vid"
-		:name="$attrs.label"
-		:rules="rules"
-		:bail="rulesBail"
-		:immediate="true"
-	>
-		<v-combobox
-			v-model="select"
-			v-slot="{ errors, valid }"
-			:error-messages="errors"
-			:success="valid"
-			:label="$attrs.label"
-			:hint="hint"
-			class="tag-input"
-			multiple
-			chips
-			deletable-chips
-			@change="updateTags"
-			@paste="paste"
-		/>
-	</ValidationProvider>
+	<v-combobox
+		v-model="select"
+		:hide-details="hide-details"
+		:readonly="readonly"
+		:disabled="disabled"
+		:error="errorI"
+		:label="$attrs.label"
+		:hint="hint"
+		class="tag-input"
+		multiple
+		chips
+		deletable-chips
+	/>
 </template>
 
 <script>
-import base from '../base';
+import GlobalUtility from '@thzero/library_client/utility/global';
+
+import base from '@/library_vue/components/base';
 
 export default {
-	name: 'TagsWithValidation',
+	name: 'VtTagsWithValidation',
 	extends: base,
 	props: {
-		rules: {
-			type: [Object, String],
-			default: ''
+		change: {
+			type: Function,
+			default: () => {}
 		},
-		rulesBail: {
+		disabled: {
 			type: Boolean,
 			default: false
 		},
-		rulesImmediate: {
+		hideDetails: {
 			type: Boolean,
 			default: false
 		},
@@ -46,24 +39,19 @@ export default {
 			type: [Number],
 			default: 5
 		},
-		// must be included in props
-		value: {
-			type: [Array],
-			default: () => []
-		},
-		vid: {
-			type: String,
-			default: ''
+		readonly: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data: () => ({
 			select: [],
 			items: [],
-			search: '' // sync search
+			search: '' //sync search
 	}),
 	computed: {
 		hint() {
-			return this.$trans.t('errors.tagLine.max', { max: this.max });
+			return GlobalUtility.$trans.t('errors.tagLine.max', { max: this.max });
 		}
 	},
 	watch: {

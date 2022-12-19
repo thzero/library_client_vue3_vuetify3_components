@@ -8,16 +8,21 @@
 		:solo-inverted="soloInverted"
 		:item-text="text"
 		item-value="id"
+		@change="change"
 	/>
 </template>
 
 <script>
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'Select',
+	name: 'VtSelect',
 	extends: baseControlEdit,
 	props: {
+		change: {
+			type: Function,
+			default: () => {}
+		},
 		flat: {
 			type: Boolean,
 			default: false

@@ -3,21 +3,26 @@
 		v-model="innerValue"
 		:readonly="readonly"
 		v-bind="$attrs"
-		v-on="$listeners"
+		@blur="blur"
+		@update:modelValue="change"
 	/>
 </template>
 
 <script>
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'TextField',
+	name: 'VtTextField',
 	extends: baseControlEdit,
 	props: {
 		// must be included in props
 		value: {
 			type: null,
 			default: null
+		},
+		blur: {
+			type: Function,
+			default: () => {}
 		},
 		readonly: {
 			type: Boolean,
