@@ -1,49 +1,53 @@
 <template>
-	<ValidationProvider
-		ref="prv"
-		:vid="vid"
-		:name="$attrs.label"
-		:rules="rules"
-		:bail="rulesBail"
-		:immediate="true"
+	<v-text-field
+		v-model="innerValue"
+		type="number"
+		:error="errorI"
+		:hide-details="hideDetails"
+		:readonly="readonly"
+		:disabled="disabled"
+		:hint="$attrs.hint"
+		:label="$attrs.label"
+		:class="displayClass"
+		:density="density"
+		v-bind="$attrs"
+		@blur="blur"
 	>
-		<v-text-field
-			v-model="innerValue"
-			v-slot="{ errors, valid }"
-			type="number"
-			:class="displayClass"
-			:error-messages="errors"
-			:readonly="readonly"
-			:success="valid"
-			v-bind="$attrs"
-			v-on="$listeners"
-		/>
-	</ValidationProvider>
+		<template v-slot:details>
+			<div
+				v-for="error of errorsI"
+				:key="error.$uid"
+			>
+				<strong>{{ error.$message }}</strong>
+				<small> on </small>
+				<strong>{{ error.$property }}</strong>
+			</div>
+		</template>
+	</v-text-field>
 </template>
 
 <script>
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'NumberFieldWithValidation',
+	name: 'VtNumberFieldWithValidation',
 	extends: baseControlEdit,
 	props: {
-		rules: {
-			type: [Object, String],
-			default: ''
+		blur: {
+			type: Function,
+			default: () => {}
 		},
-		rulesBail: {
-			type: Boolean,
-			default: true
+		change: {
+			type: Function,
+			default: () => {}
 		},
-		rulesImmediate: {
+		disabled: {
 			type: Boolean,
 			default: false
 		},
-		// must be included in props
-		value: {
-			type: null,
-			default: null
+		hideDetails: {
+			type: Boolean,
+			default: false
 		},
 		negativeColor: {
 			type: Boolean,
@@ -52,27 +56,13 @@ export default {
 		readonly: {
 			type: Boolean,
 			default: false
-		}
+		},
 	},
 	computed: {
 		displayClass() {
 			return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
-		}
+		},
 	},
-	watch: {
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		this.initValue(this.value);
-	},
-	methods: {
-		validation() {
-			return this.$refs.prv;
-		}
-	}
 };
 </script>
 

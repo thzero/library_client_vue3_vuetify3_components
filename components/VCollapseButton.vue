@@ -25,10 +25,10 @@
 <script>
 import LibraryUtility from '@thzero/library_common/utility';
 
-import baseControlEdit from './baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'CollapseButton',
+	name: 'VtCollapseButton',
 	extends: baseControlEdit,
 	props: {
 		// must be included in props
@@ -52,7 +52,7 @@ export default {
 	},
 	methods: {
 		click(value) {
-			// innerValue = value
+			//innerValue = value
 			this.update(this, value);
 			this.$emit('click');
 		},

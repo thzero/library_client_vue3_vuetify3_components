@@ -8,12 +8,12 @@
 	>
 		<v-autocomplete
 			v-model="innerValue"
-			v-slot="{ errors, valid }"
+			slot-scope="{ errors, valid }"
 			:error-messages="errors"
 			:success="valid"
 			:loading="loading"
 			:items="innerItems"
-			v-model:search-input="search"
+			:search-input.sync="search"
 			cache-items
 			item-text="name"
 			item-value="id"
@@ -24,10 +24,10 @@
 <script>
 import LibraryUtility from '@thzero/library_common/utility';
 
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'AutoCompleteWithValidation',
+	name: 'VtAutoCompleteWithValidation',
 	extends: baseControlEdit,
 	props: {
 		rules: {

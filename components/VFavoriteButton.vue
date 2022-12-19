@@ -24,10 +24,10 @@
 <script>
 import LibraryUtility from '@thzero/library_common/utility';
 
-import baseControlEdit from './baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'FavoriteButton',
+	name: 'VtFavoriteButton',
 	extends: baseControlEdit,
 	props: {
 		// must be included in props

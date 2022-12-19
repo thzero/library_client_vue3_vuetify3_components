@@ -9,20 +9,21 @@
 	>
 		<v-checkbox
 			v-model="innerValue"
-			v-slot="{ errors, valid }"
+			slot-scope="{ errors, valid }"
 			:error-messages="errors"
 			:success="valid"
 			v-bind="$attrs"
 			v-on="$listeners"
+			@change="change"
 		/>
 	</ValidationProvider>
 </template>
 
 <script>
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'CheckboxWithValidation',
+	name: 'VtCheckboxWithValidation',
 	extends: baseControlEdit,
 	props: {
 		rules: {
@@ -36,6 +37,10 @@ export default {
 		rulesImmediate: {
 			type: Boolean,
 			default: false
+		},
+		change: {
+			type: Function,
+			default: () => {}
 		},
 		// must be included in props
 		value: {

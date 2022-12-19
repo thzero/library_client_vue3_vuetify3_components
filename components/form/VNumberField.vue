@@ -4,22 +4,29 @@
 		type="number"
 		:class="displayClass"
 		:readonly="readonly"
+		:hint="$attrs.hint"
+		:label="$attrs.label"
+		:density="density"
 		v-bind="$attrs"
-		v-on="$listeners"
+		@blur="blur"
+		@update:modelValue="change"
 	/>
 </template>
 
 <script>
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'NumberField',
+	name: 'VtNumberField',
 	extends: baseControlEdit,
 	props: {
-		// must be included in props
-		value: {
-			type: null,
-			default: null
+		blur: {
+			type: Function,
+			default: () => {}
+		},
+		density: {
+			type: String,
+			default: 'compact'
 		},
 		negativeColor: {
 			type: Boolean,
@@ -28,6 +35,11 @@ export default {
 		readonly: {
 			type: Boolean,
 			default: false
+		},
+		// must be included in props
+		value: {
+			type: null,
+			default: null
 		}
 	},
 	computed: {

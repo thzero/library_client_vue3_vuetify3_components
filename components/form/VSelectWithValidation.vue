@@ -1,48 +1,39 @@
 <template>
-	<ValidationProvider
-		:vid="vid"
-		:name="$attrs.label"
-		:rules="rules"
-		:bail="rulesBail"
-		:immediate="true"
+	<v-select
+		v-model="innerValue"
+		:error="errorI"
+		:hide-details="hideDetails"
+		:item-title="itemTitle"
+		:item-value="itemValue"
+		:items="innerItems"
+		:label="$attrs.label"
+		:multiple="multiple"
 	>
-		<v-select
-			v-model="innerValue"
-			v-slot="{ errors, valid }"
-			:error-messages="errors"
-			:success="valid"
-			:items="innerItems"
-			:label="$attrs.label"
-			:flat="flat"
-			:hide-details="hideDetails"
-			:multiple="multiple"
-			:solo-inverted="soloInverted"
-			:item-text="text"
-			item-value="id"
-		/>
-	</ValidationProvider>
+		<template v-slot:details>
+			<div
+				v-for="error of errorsI"
+				:key="error.$uid"
+			>
+				<strong>{{ error.$message }}</strong>
+				<small> on </small>
+				<strong>{{ error.$property }}</strong>
+			</div>
+		</template>
+	</v-select>
 </template>
 
 <script>
-import baseControlEdit from '../baseControlEdit';
+import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
-	name: 'SelectWithValidation',
+	name: 'VtSelectWithValidation',
 	extends: baseControlEdit,
 	props: {
-		rules: {
-			type: [Object, String],
-			default: ''
+		change: {
+			type: Function,
+			default: () => {}
 		},
-		rulesBail: {
-			type: Boolean,
-			default: true
-		},
-		rulesImmediate: {
-			type: Boolean,
-			default: false
-		},
-		flat: {
+		disabled: {
 			type: Boolean,
 			default: false
 		},
@@ -54,19 +45,22 @@ export default {
 			type: [Object, Array],
 			default: null
 		},
+		itemTitle: {
+			type: String,
+			default: 'name'
+		},
+		itemValue: {
+			type: String,
+			default: 'id'
+		},
 		multiple: {
 			type: Boolean,
 			default: false
 		},
-		soloInverted: {
+		readonly: {
 			type: Boolean,
 			default: false
 		},
-		// must be included in props
-		value: {
-			type: null,
-			default: null
-		}
 	},
 	data: () => ({
 		innerItems: []
@@ -76,10 +70,6 @@ export default {
 		items(newVal) {
 			this.innerItems = newVal;
 		},
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
 	},
 	mounted() {
 		if (this.items)
@@ -88,9 +78,6 @@ export default {
 	},
 	methods: {
 		text: (item) => item.displayName ? item.displayName : item.name,
-		validation() {
-			return this.$refs.prv;
-		}
 	}
 };
 </script>

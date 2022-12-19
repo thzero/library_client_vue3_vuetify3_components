@@ -1,32 +1,32 @@
 <template>
 	<div>
-		<span v-if="innerVersion !== null">{{ $t('version.label') }} {{ $t('version.majorMinorDate', innerVersion.client) }}&nbsp;-&nbsp;{{ $t('version.majorMinorDate', innerVersion.server) }}</span>
+		<span v-if="version !== null">{{ $t('version.label') }} {{ $t('version.majorMinorDate', version.client) }}&nbsp;-&nbsp;{{ $t('version.majorMinorDate', version.server) }}</span>
 	</div>
 </template>
 
 <script>
 import { computed } from 'vue';
 
-import base from './base';
+import base from '@/library_vue/components/base';
 
 export default {
-	name: 'Version',
+	name: 'VtVersion',
 	extends: base,
 	props: {
-		value: {
+		version: {
 			type: Object,
 			default: null
 		}
 	},
 	setup(props) {
 		const innerVersion = computed(() => {
-			return props.value;
+			return props.version;
 		});
 
 		return Object.assign(base.setup(props), {
 			innerVersion
 		});
-	}
+	},
 	// data () {
 	// 	return {};
 	// },

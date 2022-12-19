@@ -7,14 +7,15 @@
 		chips
 		deletable-chips
 		class="tag-input"
-		v-model:search-input="value"
+		:search-input.sync="value"
 	/>
 </template>
 
 <script>
-import base from './base';
+import base from '@/library_vue/components/base';
 
 export default {
+	name: 'VtTags',
 	extends: base,
 	props: {
 		label: {
