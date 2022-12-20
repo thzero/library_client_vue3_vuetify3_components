@@ -58,6 +58,10 @@ export default {
 			default: false
 		},
 	},
+	setup (props) {
+		return Object.assign(baseControlEdit.setup(props), {
+		});
+	},
 	computed: {
 		displayClass() {
 			return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;

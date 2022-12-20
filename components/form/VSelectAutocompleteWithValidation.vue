@@ -57,6 +57,10 @@ export default {
 			default: null
 		}
 	},
+	setup (props) {
+		return Object.assign(baseControlEdit.setup(props), {
+		});
+	},
 	data: () => ({
 		innerItems: []
 	}),

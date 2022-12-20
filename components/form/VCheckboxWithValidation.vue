@@ -48,6 +48,10 @@ export default {
 			default: null
 		}
 	},
+	setup (props) {
+		return Object.assign(baseControlEdit.setup(props), {
+		});
+	},
 	watch: {
 		// Handles internal model changes.
 		// innerValue(newVal) {
