@@ -49,7 +49,7 @@ export default {
 		});
 
 		onMounted(async () => {
-			await serviceStore.dispatcher.getVersion(instance.ctx.correlationId());
+			await serviceStore.dispatcher.requestVersion(instance.ctx.correlationId());
 			version.value = serviceStore.state.version;
 		});
 
@@ -71,7 +71,7 @@ export default {
 	// 	}
 	// },
 	// async created() {
-	// 	await GlobalUtility.$store.dispatcher.root.getVersion(this.correlationId());
+	// 	await GlobalUtility.$store.dispatcher.root.requestVersion(this.correlationId());
 	// 	this.version = GlobalUtility.$store.state.version;
 	// }
 };

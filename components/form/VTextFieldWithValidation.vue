@@ -72,6 +72,10 @@ export default {
 			default: null
 		}
 	},
+	setup (props) {
+		return Object.assign(baseControlEdit.setup(props), {
+		});
+	},
 	computed: {
 		count() {
 			return this.maxcount ? '(' + (this.innerValue ? this.innerValue.length : 0) + ')' : '';

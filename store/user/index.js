@@ -14,12 +14,6 @@ const store = {
 	},
 	actions: {
 		// eslint-disable-next-line
-		async getUserFavorites(correlationId) {
-			const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_USER);
-			const response = await service.fetchFavoritesByGamerId(correlationId, this.state.user.user);
-			this.$logger.debug('store.user', 'getUserFavorites', 'response', response);
-			return response;
-		},
 		async refreshUserSettings({ commit }, correlationId) {
 			const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_USER);
 			const response = await service.refreshSettings(correlationId, this.state.user.user);
@@ -89,9 +83,6 @@ const store = {
 		}
 	},
 	dispatcher: {
-		async getUserFavorites(correlationId) {
-			return await GlobalUtility.$store.dispatch('getUserFavorites', correlationId);
-		},
 		async refreshUserSettings(correlationId) {
 			await GlobalUtility.$store.dispatch('refreshUserSettings', correlationId);
 		},
@@ -110,11 +101,11 @@ const store = {
 		async setUserSettings(correlationId, settings) {
 			return await GlobalUtility.$store.dispatch('setUserSettings', { correlationId: correlationId, settings: settings });
 		},
-		async setTokenResult(correlationId, tokenResult) {
-			await GlobalUtility.$store.dispatch('setUserTokenResult', { correlationId: correlationId, tokenResult: tokenResult });
+		async setUserTokenResult(correlationId, tokenResult) {
+			return await GlobalUtility.$store.dispatch('setUserTokenResult', { correlationId: correlationId, tokenResult: tokenResult });
 		},
 		async setUser(correlationId, user) {
-			await GlobalUtility.$store.dispatch('setUser', { correlationId: correlationId, user: user });
+			return await GlobalUtility.$store.dispatch('setUser', { correlationId: correlationId, user: user });
 		}
 	}
 };
