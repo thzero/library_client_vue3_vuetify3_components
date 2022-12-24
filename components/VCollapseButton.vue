@@ -5,7 +5,7 @@
 		@click="click(!innerValue)"
 	>
 		<span
-			v-if="$vuetify.breakpoint.smAndUp"
+			v-if="$vuetify.display.smAndUp"
 		>
 			{{ label }}
 		</span>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { getCurrentInstance, onMounted, watch } from 'vue';
+
 import LibraryUtility from '@thzero/library_common/utility';
 
 import baseControlEdit from '@/library_vue/components/baseControlEdit';
@@ -31,39 +33,63 @@ export default {
 	name: 'VtCollapseButton',
 	extends: baseControlEdit,
 	props: {
-		// must be included in props
-		value: {
-			type: null,
-			default: null
-		},
 		label: {
 			type: String,
+			default: null
+		},
+		// must be included in props
+		modelValue: {
+			type: null,
 			default: null
 		}
 	},
 	setup (props) {
-		return Object.assign(baseControlEdit.setup(props), {
-		});
-	},
-	watch: {
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		this.initValue(this.value);
-	},
-	methods: {
-		click(value) {
+		const instance = getCurrentInstance();
+
+		const click = (value) => {
 			//innerValue = value
 			this.update(this, value);
 			this.$emit('click');
-		},
-		update: LibraryUtility.debounce(async function(self, value) {
+		};
+		const update = () => LibraryUtility.debounce(async function(self, value) {
 			self.innerValue = value;
-		}, 500)
-	}
+		}, 500);
+
+		watch(() => props.modelValue,
+			(value) => {
+				dialogSignal.value = value;
+				instance.ctx.initValue(newVal);
+			}
+		);
+
+		onMounted(async () => {
+			instance.ctx.initValue(newVal);
+		});
+
+		return Object.assign(baseControlEdit.setup(props), {
+			click,
+			update
+		});
+	},
+	// watch: {
+	// 	// Handles external model changes.
+	// 	value(newVal) {
+	// 		this.initValue(newVal);
+	// 	}
+	// },
+	// mounted() {
+	// 	this.initValue(this.value);
+	// },
+	// methods: {
+	// 	click(value) {
+	// 		//innerValue = value
+	// 		this.update(this, value);
+	// 		this.$emit('click');
+	// 	},
+	// 	update: LibraryUtility.debounce(async function(self, value) {
+	// 		self.innerValue = value;
+	// 	}, 500)
+	// }
 };
 </script>
 

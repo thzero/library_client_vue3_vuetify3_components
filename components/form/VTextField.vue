@@ -15,33 +15,37 @@ export default {
 	name: 'VtTextField',
 	extends: baseControlEdit,
 	props: {
-		// must be included in props
-		value: {
-			type: null,
-			default: null
-		},
 		blur: {
+			type: Function,
+			default: () => {}
+		},
+		change: {
 			type: Function,
 			default: () => {}
 		},
 		readonly: {
 			type: Boolean,
 			default: false
+		},
+		// must be included in props
+		modelValue: {
+			type: null,
+			default: null
 		}
 	},
 	setup (props) {
 		return Object.assign(baseControlEdit.setup(props), {
 		});
 	},
-	watch: {
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		this.initValue(this.value);
-	}
+	// watch: {
+	// 	// Handles external model changes.
+	// 	modelValue(newVal) {
+	// 		this.initValue(newVal);
+	// 	}
+	// },
+	// mounted() {
+	// 	this.initValue(this.value);
+	// }
 };
 </script>
 

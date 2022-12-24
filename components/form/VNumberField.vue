@@ -6,7 +6,6 @@
 		:readonly="readonly"
 		:hint="$attrs.hint"
 		:label="$attrs.label"
-		:density="density"
 		v-bind="$attrs"
 		@blur="blur"
 		@update:modelValue="change"
@@ -14,6 +13,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
@@ -24,9 +25,9 @@ export default {
 			type: Function,
 			default: () => {}
 		},
-		density: {
-			type: String,
-			default: 'compact'
+		change: {
+			type: Function,
+			default: () => {}
 		},
 		negativeColor: {
 			type: Boolean,
@@ -35,31 +36,31 @@ export default {
 		readonly: {
 			type: Boolean,
 			default: false
-		},
-		// must be included in props
-		value: {
-			type: null,
-			default: null
 		}
 	},
 	setup (props) {
+		const displayClass = computed(() => {
+			return props.negativeColor ? (innerValue.value < 0 ? 'text-negative' : null) : null;
+		});
+		
 		return Object.assign(baseControlEdit.setup(props), {
+			displayClass
 		});
 	},
-	computed: {
-		displayClass() {
-			return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
-		}
-	},
-	watch: {
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		this.initValue(this.value);
-	}
+	// computed: {
+	// 	displayClass() {
+	// 		return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
+	// 	}
+	// },
+	// watch: {
+	// 	// Handles external model changes.
+	// 	value(newVal) {
+	// 		this.initValue(newVal);
+	// 	}
+	// },
+	// mounted() {
+	// 	this.initValue(this.value);
+	// }
 };
 </script>
 

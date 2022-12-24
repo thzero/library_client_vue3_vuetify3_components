@@ -1,44 +1,37 @@
 <template>
-	<ValidationProvider
-		:vid="vid"
-		:name="$attrs.label"
-		:rules="rules"
-		:bail="rulesBail"
-		:immediate="true"
+	<v-select
+		v-model="innerValue"
+		:success="valid"
+		:items="innerItems"
+		:label="label"
+		item-text="name"
+		item-value="id"
+		density="compact"
+		@update:modelValue="change"
 	>
-		<v-select
-			v-model="innerValue"
-			slot-scope="{ errors, valid }"
-			:error-messages="errors"
-			:success="valid"
-			:items="innerItems"
-			:label="label"
-			item-text="name"
-			item-value="id"
-			@change="change"
-		/>
-	</ValidationProvider>
+		<template v-slot:details>
+			{{ errorsI.length }}
+			<div
+				v-for="error of errorsI"
+				:key="error.$uid"
+			>
+				<strong>{{ error.$message }}</strong>
+				<small> on </small>
+				<strong>{{ error.$property }}</strong>
+			</div>
+		</template>
+	</v-select>
 </template>
 
 <script>
+import { getCurrentInstance, onMounted, ref, watch } from 'vue';
+
 import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
 	name: 'VtSelectAutoCompleteWithValidation',
 	extends: baseControlEdit,
 	props: {
-		rules: {
-			type: [Object, String],
-			default: ''
-		},
-		rulesBail: {
-			type: Boolean,
-			default: true
-		},
-		rulesImmediate: {
-			type: Boolean,
-			default: false
-		},
 		change: {
 			type: Function,
 			default: () => {}
@@ -50,40 +43,57 @@ export default {
 		label: {
 			type: [Object, String],
 			default: ''
-		},
-		// must be included in props
-		value: {
-			type: null,
-			default: null
 		}
 	},
 	setup (props) {
+		const instance = getCurrentInstance();
+
+		const innerItems = ref([]);
+		
+		const text = (item) => { 
+			return item.displayName ? item.displayName : item.name;
+		}
+		
+		onMounted(async () => {
+			if (props.items)
+				innerItems.value = props.items;
+			instance.ctx.initValue(props.modelValue);
+		});
+
+		watch(() => props.items,
+			(value) => {
+				innerItems.value = value;
+			}
+		);
+
 		return Object.assign(baseControlEdit.setup(props), {
+			innerItems,
+			text
 		});
 	},
-	data: () => ({
-		innerItems: []
-	}),
-	watch: {
-		// Handles external model changes.
-		items(newVal) {
-			this.innerItems = newVal;
-		},
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		if (this.items)
-			this.innerItems = this.items;
-		this.initValue(this.value);
-	},
-	methods: {
-		validation() {
-			return this.$refs.prv;
-		}
-	}
+	// data: () => ({
+	// 	innerItems: []
+	// }),
+	// watch: {
+	// 	// Handles external model changes.
+	// 	items(newVal) {
+	// 		this.innerItems = newVal;
+	// 	},
+	// 	// Handles external model changes.
+	// 	value(newVal) {
+	// 		this.initValue(newVal);
+	// 	}
+	// },
+	// mounted() {
+	// 	if (this.items)
+	// 		this.innerItems = this.items;
+	// 	this.initValue(this.value);
+	// },
+	// methods: {
+	// 	validation() {
+	// 		return this.$refs.prv;
+	// 	}
+	// }
 };
 </script>
 

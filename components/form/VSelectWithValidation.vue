@@ -1,15 +1,17 @@
 <template>
 	<v-select
 		v-model="innerValue"
-		:error="errorI"
-		:hide-details="hideDetails"
 		:item-title="itemTitle"
 		:item-value="itemValue"
 		:items="innerItems"
+		:hide-details="hideDetails"
 		:label="$attrs.label"
 		:multiple="multiple"
+      	density="compact"
+		@update:modelValue="change"
 	>
 		<template v-slot:details>
+			{{ errorsI.length }}
 			<div
 				v-for="error of errorsI"
 				:key="error.$uid"
@@ -23,6 +25,8 @@
 </template>
 
 <script>
+import { getCurrentInstance, onMounted, ref, watch } from 'vue';
+
 import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
@@ -34,10 +38,6 @@ export default {
 			default: () => {}
 		},
 		disabled: {
-			type: Boolean,
-			default: false
-		},
-		hideDetails: {
 			type: Boolean,
 			default: false
 		},
@@ -60,29 +60,51 @@ export default {
 		readonly: {
 			type: Boolean,
 			default: false
-		},
+		}
 	},
 	setup (props) {
+		const instance = getCurrentInstance();
+
+		const innerItems = ref([]);
+		
+		const text = (item) => { 
+			return item.displayName ? item.displayName : item.name;
+		}
+		
+		onMounted(async () => {
+			if (props.items)
+				innerItems.value = props.items;
+			instance.ctx.initValue(props.modelValue);
+		});
+
+		watch(() => props.items,
+			(value) => {
+				innerItems.value = value;
+			}
+		);
+
 		return Object.assign(baseControlEdit.setup(props), {
+			innerItems,
+			text
 		});
 	},
-	data: () => ({
-		innerItems: []
-	}),
-	watch: {
-		// Handles external model changes.
-		items(newVal) {
-			this.innerItems = newVal;
-		},
-	},
-	mounted() {
-		if (this.items)
-			this.innerItems = this.items;
-		this.initValue(this.value);
-	},
-	methods: {
-		text: (item) => item.displayName ? item.displayName : item.name,
-	}
+	// data: () => ({
+	// 	innerItems: []
+	// }),
+	// watch: {
+	// 	// Handles external model changes.
+	// 	items(newVal) {
+	// 		this.innerItems = newVal;
+	// 	},
+	// },
+	// mounted() {
+	// 	if (this.items)
+	// 		this.innerItems = this.items;
+	// 	this.initValue(this.value);
+	// },
+	// methods: {
+	// 	text: (item) => item.displayName ? item.displayName : item.name,
+	// }
 };
 </script>
 

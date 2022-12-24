@@ -155,7 +155,7 @@ export default {
 			return instance.ctx.serviceStore.user && instance.ctx.serviceStore.userAuthCompleted;
 		});
 		const isLoggedIn = computed(() => {
-			return instance.ctx.serviceStore.user && instance.ctx.serviceStore.userIsLoggedIn;
+			return instance.ctx.serviceStore.user && instance.ctx.serviceStore.userAuthIsLoggedIn;
 		});
 
 		const clickAbout = () => {
