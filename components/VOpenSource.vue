@@ -154,7 +154,27 @@ export default {
 	name: 'VtOpenSource',
 	extends: baseOpenSource,
 	setup(props) {
+		const initializeDependenciesClientFramework = async () => {
+			return [
+				{
+					category: 'client',
+					name: 'vuetify',
+					url: 'https://github.com/vuetifyjs/vuetify',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/vuetifyjs/vuetify/blob/master/LICENSE.md'
+				},
+				{
+					category: 'client',
+					name: '@thzero/library_client_vue3_vuetify3_components',
+					url: 'https://github.com/thzero/library_client_vue3_vuetify3_components',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/thzero/library_client_vue3_vuetify3_components/blob/master/license.md'
+				}
+			];
+		};
+
 		return Object.assign(baseOpenSource.setup(props), {
+			initializeDependenciesClientFramework
 		});
 	}
 };
