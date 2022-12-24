@@ -64,7 +64,7 @@ export default {
 	// }),
 	// computed: {
 	// 	breakpointName() {
-	// 		return LibraryUtility.isDev ? this.$vuetify.breakpoint.name : '';
+	// 		return LibraryUtility.isDev ? this.$vuetify.display.name : '';
 	// 	},
 	// 	isDev() {
 	// 		return LibraryUtility.isDev;

@@ -1,27 +1,18 @@
 <template>
-	<ValidationProvider
-		ref="prv"
-		:vid="vid"
-		:name="$attrs.label"
-		:rules="rules"
-		:bail="rulesBail"
-		:immediate="true"
-	>
-		<VDateTimeField
-			v-model="innerValue"
-			slot-scope="{ errors, valid }"
-			:error-messages="errors"
-			:success="valid"
-			v-bind="$attrs"
-			:date-format="dateFormat"
-			:output-type="innerOutputType"
-			:time-format="timeFormat"
-			:cancel-text="$t('buttons.cancel')"
-			:clear-text="$t('buttons.clear')"
-			:ok-text="$t('buttons.ok')"
-			v-on="$listeners"
-		/>
-	</ValidationProvider>
+	<VDateTimeField
+		v-model="innerValue"
+		slot-scope="{ errors, valid }"
+		:error-messages="errors"
+		:success="valid"
+		v-bind="$attrs"
+		:date-format="dateFormat"
+		:output-type="innerOutputType"
+		:time-format="timeFormat"
+		:cancel-text="$t('buttons.cancel')"
+		:clear-text="$t('buttons.clear')"
+		:ok-text="$t('buttons.ok')"
+		v-on="$listeners"
+	/>
 </template>
 
 <script>

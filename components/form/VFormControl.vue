@@ -23,12 +23,14 @@
 			class="text-right"
 		>
 			<v-spacer />
+			<slot name="buttons_pre"/>
 			<v-btn
 				v-if="buttonDelete"
 				color="primary lighten-1"
 				text
 				@click="handleDelete"
 				class="mr-2"
+				:loading="isLoading"
 			>
 				{{ $t('buttons.delete') }}
 			</v-btn>
@@ -38,6 +40,7 @@
 				text
 				@click="handleClear"
 				class="mr-2"
+				:loading="isLoading"
 			>
 				{{ $t('buttons.clear') }}
 			</v-btn>
@@ -47,13 +50,14 @@
 				color="green darken-1"
 				text
 				@click="submit"
+				:loading="isLoading"
 			>
 				{{ $t('buttons.ok') }}
 			</v-btn>
 		</div>
 		<v-overlay
 			absolute
-			:value="overlaySave"
+			:value="overlayLoading"
 		>
 			<v-card
 				color="primary"
@@ -84,7 +88,7 @@
 
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
 // import baseEdit from '@/library_vue/components/baseEdit';
-import baseFormControl from '@/library_vue/components/baseFormControl';
+import baseFormControl from '@/library_vue/components/form/baseFormControl';
 
 // import DialogSupport from '@/library_vue/components/support/dialog';
 
@@ -158,7 +162,7 @@ export default {
 // 	setup(props) {
 // 		const instance = getCurrentInstance();
 
-// 		const dialogLocationDeleteSignal = ref(new DialogSupport());
+// 		const dialogDeleteConfirmSignal = ref(new DialogSupport());
 // 		const dirty = ref(false);
 // 		const invalid = ref(true);
 // 		const isSaving = ref(false);
@@ -169,7 +173,7 @@ export default {
 // 				return true;
 // 			return (invalid.value || props.disabled);
 // 		});
-// 		const overlaySave = computed(() => {
+// 		const overlayLoading = computed(() => {
 // 			return isSaving.value && props.autoSave;
 // 		});
 		
@@ -268,17 +272,17 @@ export default {
 // 				// console.log('v.errors: ' + JSON.stringify(value));
 // 				invalid.value = value.$invalid;
 // 				dirty.value = value.$anyDirty;
-// 				// console.log('v.invalid: ' + this.invalid);
+// 				// console.log('v.invalid: ' + invalid.value);
 // 			}
 // 		);
 
 // 		return Object.assign(baseEdit.setup(props), {
 // 			buttonOkDisabled,
-// 			dialogLocationDeleteSignal,
+// 			dialogDeleteConfirmSignal,
 // 			dirty,
 // 			invalid,
 // 			isSaving,
-// 			overlaySave,
+// 			overlayLoading,
 // 			handleClear,
 // 			handleDelete,
 // 			handleDeleteConfirmOk,
@@ -291,7 +295,7 @@ export default {
 // 		});
 // 	},
 // 	// data: () => ({
-// 	// 	dialogLocationDeleteSignal: new DialogSupport(),
+// 	// 	dialogDeleteConfirmSignal: new DialogSupport(),
 // 	// 	disabled: false,
 // 	// 	internalItem: null,
 // 	// 	invalid: true,

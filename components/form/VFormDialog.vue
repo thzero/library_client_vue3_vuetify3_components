@@ -38,6 +38,7 @@
 							color="error lighten-1"
 							text
 							@click="handleDelete"
+							:loading="loading"
 						>
 							{{ $t('buttons.delete') }}
 						</v-btn>
@@ -46,6 +47,7 @@
 							color="primary lighten-1"
 							text
 							@click="handleClear"
+							:loading="loading"
 						>
 							{{ $t('buttons.clear') }}
 						</v-btn>
@@ -54,6 +56,7 @@
 							color="primary lighten-1"
 							text
 							@click="handleCancel"
+							:loading="loading"
 						>
 							{{ $t('buttons.cancel') }}
 						</v-btn>
@@ -63,6 +66,7 @@
 							color="green darken-1"
 							text
 							@click="submit"
+							:loading="loading"
 						>
 							{{ $t('buttons.ok') }}
 						</v-btn>
@@ -160,11 +164,15 @@ export default {
 		dialogHeightI: 300,
 		dialogDeleteConfirmSignal: new DialogSupport(),
 		dialogSignal: false,
-		disabled: false
+		disabled: false,
+		executing: false
 	}),
 	computed: {
 		fullscreenInternal() {
 			return VueUtility.fullscreen(this.$vuetify);
+		},
+		loading() {
+			return this.executing || this.dialogDeleteConfirmSignal.signal;
 		},
 		scrollableI() {
 			return this.scrollable ? 'scrollable' : '';
@@ -196,15 +204,27 @@ export default {
 			this.disabled = false;
 		},
 		handleCancel() {
-			const correlationId = this.correlationId();
-			this.serverErrors = [];
-			this.dialogSignal = false;
-			this.clear(correlationId);
-			this.logger.debug('FormDialog', 'cancel', 'cancel', null, correlationId);
-			this.$emit('cancel');
+			this.executing = true;
+			try {
+				const correlationId = this.correlationId();
+				this.serverErrors = [];
+				this.dialogSignal = false;
+				this.clear(correlationId);
+				this.logger.debug('FormDialog', 'cancel', 'cancel', null, correlationId);
+				this.$emit('cancel');
+			}
+			finally {
+				this.executing = false;
+			}
 		},
 		handleClear() {
-			this.clear(this.correlationId());
+			this.executing = true;
+			try {
+				this.clear(this.correlationId());
+			}
+			finally {
+				this.executing = false;
+			}
 		},
 		async handleDelete() {
 			this.serverErrors = [];
@@ -254,28 +274,34 @@ export default {
 			this.$refs.obs.setErrors(errors);
 		},
 		async submit() {
-			this.serverErrors = [];
+			this.executing = true;
+			try {
+				this.serverErrors = [];
 
-			const correlationId = this.correlationId();
+				const correlationId = this.correlationId();
 
-			const result = await this.$refs.obs.validate(correlationId);
-			this.logger.debug('FormDialog', 'submit', 'result', result, correlationId);
-			if (!result)
-				return;
-
-			if (this.preCompleteOk) {
-				const response = await this.preCompleteOk(correlationId);
-				this.logger.debug('FormDialog', 'submit', 'response', response, correlationId);
-				if (this.hasFailed(response)) {
-					VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
+				const result = await this.$refs.obs.validate(correlationId);
+				this.logger.debug('FormDialog', 'submit', 'result', result, correlationId);
+				if (!result)
 					return;
-				}
-			}
 
-			this.dialogSignal = false;
-			this.logger.debug('FormDialog', 'submit', 'ok', null, correlationId);
-			this.$emit('ok');
-			this.clear(correlationId);
+				if (this.preCompleteOk) {
+					const response = await this.preCompleteOk(correlationId);
+					this.logger.debug('FormDialog', 'submit', 'response', response, correlationId);
+					if (this.hasFailed(response)) {
+						VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
+						return;
+					}
+				}
+
+				this.dialogSignal = false;
+				this.logger.debug('FormDialog', 'submit', 'ok', null, correlationId);
+				this.$emit('ok');
+				this.clear(correlationId);
+			}
+			finally {
+				this.executing = false;
+			}
 		},
 		async validate(correlationId) {
 			return await this.$refs.obs.validate(correlationId);

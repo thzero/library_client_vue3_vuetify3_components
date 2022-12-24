@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue';
+
 import GlobalUtility from '@thzero/library_client/utility/global';
 
 import base from '@/library_vue/components/base';
@@ -44,45 +46,98 @@ export default {
 			default: false
 		}
 	},
-	data: () => ({
-			select: [],
-			items: [],
-			search: '' //sync search
-	}),
-	computed: {
-		hint() {
-			return GlobalUtility.$trans.t('errors.tagLine.max', { max: this.max });
-		}
-	},
-	watch: {
-		select(val) {
-			if (val.length <= this.max)
-				return;
-			// TODO: Check last entry to see if fits the rules...
-			this.$nextTick(() => this.select.pop());
-		}
-	},
-	created() {
-		this.select = this.value ? this.value : [];
-	},
-	methods: {
-		paste() {
+	setup (props) {
+		const instance = getCurrentInstance();
+
+		const items = ref([]);
+		const select = ref(props.modelValue ? props.modelValue : []);
+		const search = ref('');
+		
+		const hint = computed((item) => { 
+			return GlobalUtility.$trans.t('errors.tagLine.max', { max: props.max });
+		});
+
+		const paste = () => {
 			this.$nextTick(() => {
-				if (String.isNullOrEmpty(this.search))
+				if (String.isNullOrEmpty(search.value))
 					return;
-				this.select.push(...this.search.split(','));
-				this.$nextTick(() => {
+				select.value.push(...search.value.split(','));
+				instance.ctx.$nextTick(() => {
 					// this.$emit('input', this.search)
-					this.search = '';
+					search.value = '';
 				});
 			});
-		},
-		updateTags() {
-			this.$nextTick(() => {
-				this.$emit('input', this.select);
+		};
+		const updateTags = () => {
+			instance.ctx.$nextTick(() => {
+				instance.ctx.$emit('input', select.value);
 			});
-		}
-	}
+		};
+		
+		onMounted(async () => {
+			if (props.items)
+				innerItems.value = props.items;
+			instance.ctx.initValue(props.modelValue);
+		});
+
+		watch(() => select,
+			(value) => {
+				if (value.length <= props.max)
+					return;
+				// TODO: Check last entry to see if fits the rules...
+				instance.ctx.$nextTick(() => instance.ctx.select.pop());
+			}
+		);
+
+		return Object.assign(baseControlEdit.setup(props), {
+			hint,
+			items,
+			paste,
+			search,
+			select,
+			text,
+			updateTags
+		});
+	},
+	// data: () => ({
+	// 		select: [],
+	// 		items: [],
+	// 		search: '' //sync search
+	// }),
+	// computed: {
+	// 	hint() {
+	// 		return GlobalUtility.$trans.t('errors.tagLine.max', { max: this.max });
+	// 	}
+	// },
+	// watch: {
+	// 	select(val) {
+	// 		if (val.length <= this.max)
+	// 			return;
+	// 		// TODO: Check last entry to see if fits the rules...
+	// 		this.$nextTick(() => this.select.pop());
+	// 	}
+	// },
+	// created() {
+	// 	this.select = this.value ? this.value : [];
+	// },
+	// methods: {
+	// 	paste() {
+	// 		this.$nextTick(() => {
+	// 			if (String.isNullOrEmpty(this.search))
+	// 				return;
+	// 			this.select.push(...this.search.split(','));
+	// 			this.$nextTick(() => {
+	// 				// this.$emit('input', this.search)
+	// 				this.search = '';
+	// 			});
+	// 		});
+	// 	},
+	// 	updateTags() {
+	// 		this.$nextTick(() => {
+	// 			this.$emit('input', this.select);
+	// 		});
+	// 	}
+	// }
 };
 </script>
 

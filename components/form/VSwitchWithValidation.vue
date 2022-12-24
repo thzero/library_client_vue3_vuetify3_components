@@ -1,18 +1,22 @@
 <template>
-	<ValidationProvider
-		:vid="vid"
-		:name="$attrs.label"
-		:rules="rules"
-		:bail="rulesBail"
-		:immediate="true"
+	<v-switch
+		v-model="innerValue"
+		:hide-details="hideDetails"
+		:label="$attrs.label"
+		:disabled="disabled"
+		@update:modelValue="change"
 	>
-		<v-switch
-      		v-model="innerValue"
-      		:label="$attrs.label"
-			:disabled="disabled"
-			@change="change"
-    	></v-switch>
-	</ValidationProvider>
+		<template v-slot:details>
+			<div
+				v-for="error of errorsI"
+				:key="error.$uid"
+			>
+				<strong>{{ error.$message }}</strong>
+				<small> on </small>
+				<strong>{{ error.$property }}</strong>
+			</div>
+		</template>
+	</v-switch>
 </template>
 
 <script>
@@ -26,41 +30,24 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		rules: {
-			type: [Object, String],
-			default: ''
-		},
-		rulesBail: {
-			type: Boolean,
-			default: true
-		},
-		rulesImmediate: {
-			type: Boolean,
-			default: false
-		},
 		change: {
 			type: Function,
 			default: () => {}
-		},
-		// must be included in props
-		value: {
-			type: Boolean,
-			default: false
 		}
 	},
 	setup (props) {
 		return Object.assign(baseControlEdit.setup(props), {
 		});
 	},
-	watch: {
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		this.initValue(this.value);
-	}
+	// watch: {
+	// 	// Handles external model changes.
+	// 	value(newVal) {
+	// 		this.initValue(newVal);
+	// 	}
+	// },
+	// mounted() {
+	// 	this.initValue(this.value);
+	// }
 };
 </script>
 

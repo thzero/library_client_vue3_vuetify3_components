@@ -2,7 +2,7 @@
 	<v-dialog
 		v-model="dialogSignal"
 		persistent
-		max-width="300px"
+		max-width="500px"
 		@keydown.esc="dialogCancel()"
 	>
 		<v-card>
@@ -10,7 +10,8 @@
 				{{ $attrs.label }}
 			</v-card-title>
 			<v-card-text>
-				{{ message ? message : nonRecoverable ? $t('questions.areYouSureNonRecoverable') : $t('questions.areYouSure') }}
+				<div v-if="messageRaw" v-html="internalMessage"></div>
+				<div v v-if="!messageRaw">{{ internalMessage }}</div>
 				<div
 					v-for="(item, index) in serverErrors"
 					:key="index"
@@ -41,6 +42,8 @@
 </template>
 
 <script>
+import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue';
+
 import VueUtility from '@thzero/library_client_vue3/utility/index';
 
 import baseConfirmationDialog from '@/library_vue/components/baseConfirmationDialog';
@@ -49,12 +52,19 @@ export default {
 	name: 'VtConfirmationDialog',
 	extends: baseConfirmationDialog,
 	setup(props) {
+		const instance = getCurrentInstance();
+
 		const handleError = (response, correlationId) => {
 			VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
 		}
 
+		const internalMessage = computed(() => {
+			return props.message ? props.message : props.nonRecoverable ? instance.ctx.$t('questions.areYouSureNonRecoverable') : instance.ctx.$t('questions.areYouSure')
+		});
+
 		return Object.assign(baseConfirmationDialog.setup(props), {
 			handleError,
+			internalMessage
 		});
 	},
 	// methods: {

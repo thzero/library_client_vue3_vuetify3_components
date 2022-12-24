@@ -2,12 +2,12 @@
 	<v-select
 		v-model="innerValue"
 		:items="innerItems"
-		:label="$attrs.label"
-		:flat="flat"
-		:hide-details="hideDetails"
-		:solo-inverted="soloInverted"
 		:item-text="text"
 		item-value="id"
+		:hide-details="hideDetails"
+		:label="$attrs.label"
+		:flat="flat"
+		:solo-inverted="soloInverted"
 		@change="change"
 	/>
 </template>
@@ -27,10 +27,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		hideDetails: {
-			type: Boolean,
-			default: false
-		},
 		items: {
 			type: [Object, Array],
 			default: null
@@ -38,11 +34,6 @@ export default {
 		soloInverted: {
 			type: Boolean,
 			default: false
-		},
-		// must be included in props
-		value: {
-			type: null,
-			default: null
 		}
 	},
 	setup (props) {

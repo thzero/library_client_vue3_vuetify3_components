@@ -9,24 +9,30 @@
 		:hint="$attrs.hint"
 		:label="$attrs.label"
 		:class="displayClass"
-		:density="density"
 		v-bind="$attrs"
 		@blur="blur"
+		@update:modelValue="change"
 	>
 		<template v-slot:details>
 			<div
-				v-for="error of errorsI"
-				:key="error.$uid"
+				v-if="errorsI && errorsI.length > 0"
 			>
-				<strong>{{ error.$message }}</strong>
-				<small> on </small>
-				<strong>{{ error.$property }}</strong>
+				<div
+					v-for="error of errorsI"
+					:key="error.$uid"
+				>
+					<strong>{{ error.$message }}</strong>
+					<small> on </small>
+					<strong>{{ error.$property }}</strong>
+				</div>
 			</div>
 		</template>
 	</v-text-field>
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import baseControlEdit from '@/library_vue/components/baseControlEdit';
 
 export default {
@@ -45,10 +51,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		hideDetails: {
-			type: Boolean,
-			default: false
-		},
 		negativeColor: {
 			type: Boolean,
 			default: false
@@ -59,14 +61,19 @@ export default {
 		},
 	},
 	setup (props) {
+		const displayClass = computed(() => {
+			return props.negativeColor ? (innerValue.value < 0 ? 'text-negative' : null) : null;
+		});
+		
 		return Object.assign(baseControlEdit.setup(props), {
+			displayClass
 		});
 	},
-	computed: {
-		displayClass() {
-			return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
-		},
-	},
+	// computed: {
+	// 	displayClass() {
+	// 		return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
+	// 	},
+	// },
 };
 </script>
 

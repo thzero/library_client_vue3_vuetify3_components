@@ -1,22 +1,22 @@
 <template>
-	<ValidationProvider
-		ref="prv"
-		:vid="vid"
-		:name="$attrs.label"
-		:rules="rules"
-		:bail="rulesBail"
-		:immediate="true"
+	<v-checkbox
+		v-model="innerValue"
+		:hide-details="hideDetails"
+		:success="valid"
+		v-bind="$attrs"
+		@update:modelValue="change"
 	>
-		<v-checkbox
-			v-model="innerValue"
-			slot-scope="{ errors, valid }"
-			:error-messages="errors"
-			:success="valid"
-			v-bind="$attrs"
-			v-on="$listeners"
-			@change="change"
-		/>
-	</ValidationProvider>
+		<template v-slot:details>
+			<div
+				v-for="error of errorsI"
+				:key="error.$uid"
+			>
+				<strong>{{ error.$message }}</strong>
+				<small> on </small>
+				<strong>{{ error.$property }}</strong>
+			</div>
+		</template>
+	</v-checkbox>
 </template>
 
 <script>
@@ -26,50 +26,33 @@ export default {
 	name: 'VtCheckboxWithValidation',
 	extends: baseControlEdit,
 	props: {
-		rules: {
-			type: [Object, String],
-			default: ''
-		},
-		rulesBail: {
-			type: Boolean,
-			default: true
-		},
-		rulesImmediate: {
-			type: Boolean,
-			default: false
-		},
 		change: {
 			type: Function,
 			default: () => {}
-		},
-		// must be included in props
-		value: {
-			type: null,
-			default: null
 		}
 	},
 	setup (props) {
 		return Object.assign(baseControlEdit.setup(props), {
 		});
 	},
-	watch: {
-		// Handles internal model changes.
-		// innerValue(newVal) {
-		//	 this.$emit('input', newVal)
-		// },
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		this.initValue(this.value);
-	},
-	methods: {
-		validation() {
-			return this.$refs.prv;
-		}
-	}
+	// watch: {
+	// 	// Handles internal model changes.
+	// 	// innerValue(newVal) {
+	// 	//	 this.$emit('input', newVal)
+	// 	// },
+	// 	// Handles external model changes.
+	// 	value(newVal) {
+	// 		this.initValue(newVal);
+	// 	}
+	// },
+	// mounted() {
+	// 	this.initValue(this.value);
+	// },
+	// methods: {
+	// 	validation() {
+	// 		return this.$refs.prv;
+	// 	}
+	// }
 };
 </script>
 

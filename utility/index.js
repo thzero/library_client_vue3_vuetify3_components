@@ -74,7 +74,7 @@ class Utility {
 	}
 
 	static fullscreen(vuetify) {
-		return vuetify.breakpoint.xs;
+		return vuetify.display.xs;
 	}
 
 	static handleError(object, serverErrors, response) {
