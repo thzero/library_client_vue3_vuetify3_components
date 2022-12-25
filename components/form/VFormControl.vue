@@ -84,13 +84,8 @@
 </template>
 
 <script>
-// import { computed, getCurrentInstance, ref, watch } from 'vue';
-
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
-// import baseEdit from '@/library_vue/components/baseEdit';
 import baseFormControl from '@/library_vue/components/form/baseFormControl';
-
-// import DialogSupport from '@/library_vue/components/support/dialog';
 
 export default {
 	name: 'VtFormControl',
@@ -98,10 +93,10 @@ export default {
 		VConfirmationDialog
 	},
 	extends: baseFormControl,
-	setup(props) {
+	setup(props) { 
 		return Object.assign(baseFormControl.setup(props), {
 		});
-	},
+	}
 }
 // export default {
 // 	name: 'VtFormControl',
