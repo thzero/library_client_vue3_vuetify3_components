@@ -7,13 +7,12 @@
 <script>
 import { computed } from 'vue';
 
-// import base from '@/library_vue/components/base';
-import { useBaseComponent } from '@/library_vue/components/base';
+import { useBaseVersionComponent } from '@/library_vue/components/baseVersion';
 
 export default {
 	name: 'VtVersion',
 	props: {
-		version: {
+		modelValue: {
 			type: Object,
 			default: null
 		}
@@ -29,7 +28,8 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
-		} = useBaseComponent(props, context);
+			version
+		} = useBaseVersionComponent(props, context);
 
 		const innerVersion = computed(() => {
 			return props.version;
@@ -45,17 +45,9 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
-			innerVersion
+			version
 		};
-	},
-	// data () {
-	// 	return {};
-	// },
-	// computed: {
-	// 	innerVersion() {
-	// 		return this.value;
-	// 	}
-	// }
+	}
 };
 </script>
 
