@@ -9,7 +9,7 @@
 		:label="$attrs.label"
 		:multiple="multiple"
       	density="compact"
-		@update:modelValue="change"
+		@update:modelValue="innerValueUpdate"
 	>
 		<template v-slot:details>
 			<div
@@ -25,22 +25,17 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+// import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtSelectWithValidation',
-	extends: baseControlEdit,
+	// extends: baseControlEdit,
 	props: {
-		change: {
-			type: Function,
-			default: () => {}
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
+		...useBaseControlEditProps,
 		items: {
 			type: [Object, Array],
 			default: null
@@ -56,15 +51,31 @@ export default {
 		multiple: {
 			type: Boolean,
 			default: false
-		},
-		readonly: {
-			type: Boolean,
-			default: false
 		}
 	},
-	setup (props) {
-		const instance = getCurrentInstance();
-
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			innerValueUpdate
+		} = useBaseControlEditComponent(props, context);
+		
 		const innerItems = ref([]);
 		
 		const text = (item) => { 
@@ -74,7 +85,7 @@ export default {
 		onMounted(async () => {
 			if (props.items)
 				innerItems.value = props.items;
-			instance.ctx.initValue(props.modelValue);
+			initValue(props.modelValue);
 		});
 
 		watch(() => props.items,
@@ -83,10 +94,29 @@ export default {
 			}
 		);
 
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			innerValueUpdate,
 			innerItems,
 			text
-		});
+		};
 	},
 	// data: () => ({
 	// 	innerItems: []
