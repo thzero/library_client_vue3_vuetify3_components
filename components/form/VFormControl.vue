@@ -129,6 +129,14 @@
 			@ok="handleDeleteConfirmOk"
 		/>
 	</div>
+	<v-snackbar
+		ref="notifyRef"
+		v-model="notifySignal"
+		:color="notifyColor"
+		:timeout="notifyTimeout"
+    >
+		{{ notifyMessage }}
+	</v-snackbar>
 </template>
 
 <script>
@@ -136,7 +144,9 @@
 
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
 // import baseEdit from '@/library_vue/components/baseEdit';
-import baseFormControl from '@/library_vue/components/form/baseFormControl';
+// import baseFormControl from '@/library_vue/components/form/baseFormControl';
+import { useBaseFormControlComponent } from '@/library_vue/components/form/baseFormControl';
+import { useBaseFormControlProps } from '@/library_vue/components/form/baseFormControlProps';
 
 // import DialogSupport from '@/library_vue/components/support/dialog';
 
@@ -145,10 +155,76 @@ export default {
 	components: {
 		VConfirmationDialog
 	},
-	extends: baseFormControl,
-	setup(props) {
-		return Object.assign(baseFormControl.setup(props), {
-		});
+	// extends: baseFormControl,
+	props: {
+		...useBaseFormControlProps
+	},
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			buttonOkDisabled,
+			dialogDeleteConfirmSignal,
+			dirty,
+			invalid,
+			isClearing,
+			isDeleting,
+			isLoading,
+			overlayLoading,
+			handleClear,
+			handleDelete,
+			handleDeleteConfirmOk,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			reset,
+			setNotify,
+			submit
+		} = useBaseFormControlComponent(props, context);
+		
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			buttonOkDisabled,
+			dialogDeleteConfirmSignal,
+			dirty,
+			invalid,
+			isClearing,
+			isDeleting,
+			isLoading,
+			overlayLoading,
+			handleClear,
+			handleDelete,
+			handleDeleteConfirmOk,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			reset,
+			setNotify,
+			submit
+		};
 	},
 }
 // export default {
