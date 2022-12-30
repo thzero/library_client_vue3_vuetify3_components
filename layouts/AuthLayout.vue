@@ -8,7 +8,6 @@
 			<template v-slot:prepend>
 				<v-app-bar-nav-icon
 					class="hidden-md-and-up"
-					@click.stop="toggleDrawer"
 				>
 				</v-app-bar-nav-icon>
 			</template>

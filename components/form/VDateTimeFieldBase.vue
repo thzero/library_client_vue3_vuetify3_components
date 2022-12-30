@@ -55,7 +55,7 @@
 					</v-tab-item>
 					<v-tab-item key="timer">
 						<v-time-picker
-							ref="timer"
+							ref="timerRef"
 							v-model="time"
 							class="v-time-picker-custom"
 							v-bind="timePickerProps"

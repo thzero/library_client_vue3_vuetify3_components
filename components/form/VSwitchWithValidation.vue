@@ -21,24 +21,58 @@
 </template>
 
 <script>
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtSwitchWithValidation',
-	extends: baseControlEdit,
 	props: {
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		change: {
-			type: Function,
-			default: () => {}
-		}
+		...useBaseControlEditProps,
 	},
-	setup (props) {
-		return Object.assign(baseControlEdit.setup(props), {
-		});
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
+		
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			innerValueUpdate
+		};
 	},
 	// watch: {
 	// 	// Handles external model changes.

@@ -9,33 +9,62 @@
 </template>
 
 <script>
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtTextField',
-	extends: baseControlEdit,
 	props: {
+		...useBaseControlEditProps,
 		blur: {
 			type: Function,
 			default: () => {}
-		},
-		change: {
-			type: Function,
-			default: () => {}
-		},
-		readonly: {
-			type: Boolean,
-			default: false
-		},
-		// must be included in props
-		modelValue: {
-			type: null,
-			default: null
 		}
 	},
-	setup (props) {
-		return Object.assign(baseControlEdit.setup(props), {
-		});
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		};
 	},
 	// watch: {
 	// 	// Handles external model changes.

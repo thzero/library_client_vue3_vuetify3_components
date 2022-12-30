@@ -7,23 +7,45 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, ref, watch } from 'vue';
+import { computed} from 'vue';
 import { useTheme } from 'vuetify';
 		
-import dayjs from 'dayjs';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtDatetimePicker',
     components: { 
 		Datepicker 
 	},
-	extends: baseControlEdit,
-	setup (props) {
-		const instance = getCurrentInstance();
+	props: {
+		...useBaseControlEditProps
+	},
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
 
 		const theme = useTheme();
 
@@ -35,11 +57,30 @@ export default {
 			return value ? value : Date();
 		};
 
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue,
 			convertValue,
 			dark,
 			theme
-		});
+		};
 	}
 };
 </script>

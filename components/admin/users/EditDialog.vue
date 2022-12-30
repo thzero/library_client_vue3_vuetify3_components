@@ -10,7 +10,7 @@
 		<v-layout>
 			<v-flex xs6>
 				<VTextFieldWithValidation
-					ref="id"
+					ref="idRef"
 					v-model="id"
 					vid="id"
 					:label="$t('forms.id')"
@@ -19,7 +19,7 @@
 			</v-flex>
 			<v-flex xs6>
 				<VTextFieldWithValidation
-					ref="externalId"
+					ref="externalIdRef"
 					v-model="externalId"
 					vid="externalId"
 					:label="$t('forms.externalId')"
@@ -29,7 +29,7 @@
 		</v-layout>
 
 		<VTextFieldWithValidation
-			ref="name"
+			ref="nameRef"
 			v-model="name"
 			vid="name"
 			:label="$t('forms.name')"
@@ -37,7 +37,7 @@
 		/>
 
 		<VSelectWithValidation
-			ref="roles"
+			ref="rolesRef"
 			v-model="innerValue.roles"
 			vid="roles"
 			:items="roles"
