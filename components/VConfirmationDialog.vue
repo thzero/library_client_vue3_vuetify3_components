@@ -73,10 +73,11 @@ export default {
 			internalItem
 		} = useBaseConfirmationDialogComponent(
 			props,
-			context, 
-			null, 
-			(response, correlationId) => {
-				VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
+			context,
+			{
+				handleErrorI: (response, correlationId) => {
+					VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
+				}
 			}
 		);
 

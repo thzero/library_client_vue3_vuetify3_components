@@ -6,9 +6,9 @@ import VueUtility from '@/library_vue_vuetify/utility/index';
 
 import { useBaseEditComponent } from '@/library_vue/components/baseEdit';
 
-export function useDisplayComponent(props, context, initializeI) {
+export function useDisplayComponent(props, context, options) {
 	const {
-	} = useBaseEditComponent(props, context, initializeI);
+	} = useBaseEditComponent(props, context, options);
 
 	const useDisplayI = useDisplay();
 

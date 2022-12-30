@@ -45,17 +45,17 @@ export default {
 			innerValue,
 			innerValueUpdate,
 			initValue
-		} = useBaseControlEditComponent(props, context);
+		} = useBaseControlEditComponent(props, context, { 
+			convertValueI: (value) => {
+				return value ? value : Date();
+			}}
+		);
 
 		const theme = useTheme();
 
 		const dark = computed(() => {
 			return theme.current.value.dark;
 		});
-
-		const convertValue = (value) => {
-			return value ? value : Date();
-		};
 
 		return {
 			correlationId,
@@ -77,7 +77,6 @@ export default {
 			innerValue,
 			innerValueUpdate,
 			initValue,
-			convertValue,
 			dark,
 			theme
 		};
