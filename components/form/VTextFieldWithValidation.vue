@@ -34,13 +34,11 @@
 <script>
 import { computed } from 'vue';
 
-// import baseControlEdit from '@/library_vue/components/baseControlEdit';
 import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
 import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtTextFieldWithValidation',
-	// extends: baseControlEdit,
 	props: {
 		...useBaseControlEditProps,
 		blur: {

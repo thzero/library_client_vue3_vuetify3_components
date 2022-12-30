@@ -27,13 +27,11 @@
 <script>
 import { onMounted, ref, watch } from 'vue';
 
-// import baseControlEdit from '@/library_vue/components/baseControlEdit';
 import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
 import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtSelectWithValidation',
-	// extends: baseControlEdit,
 	props: {
 		...useBaseControlEditProps,
 		items: {

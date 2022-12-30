@@ -6,7 +6,7 @@
 				class="pa-0"
 			>
 				<VTextAreaWithValidation
-					ref="markdown"
+					ref="markdownRef"
 					v-model="innerValue"
 					:vid="vid"
 				/>

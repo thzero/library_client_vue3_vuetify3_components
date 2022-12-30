@@ -1,6 +1,6 @@
 <template>
 	<v-btn
-		ref="btnOpen"
+		ref="btnOpenRef"
 		:color="innerValue"
 		@click="open"
 		style="width:100%;"

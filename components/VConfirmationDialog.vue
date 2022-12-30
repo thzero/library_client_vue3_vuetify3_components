@@ -48,13 +48,12 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 import VueUtility from '@thzero/library_client_vue3/utility/index';
 
 import { useBaseConfirmationDialogComponent } from '@/library_vue/components/baseConfirmationDialogComponent';
-import { useBaseConfirmationDialogProps } from '@/library_vue/components/baseConfirmationDialogProps';
+import { baseConfirmationDialogProps } from '@/library_vue/components/baseConfirmationDialogProps';
 
 export default {
 	name: 'VtConfirmationDialog',
-	// extends: baseConfirmationDialog,
 	props: {
-		...useBaseConfirmationDialogProps
+		...baseConfirmationDialogProps
 	},
 	setup(props, context) {
 		const {
