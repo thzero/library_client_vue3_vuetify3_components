@@ -24,6 +24,14 @@
 							{{ item }}
 						</div>
 					</v-form>
+					<v-snackbar
+						ref="notifyRef"
+						v-model="notifySignal"
+						:color="notifyColor"
+						:timeout="notifyTimeout"
+					>
+						{{ notifyMessage }}
+					</v-snackbar>
 				</v-card-item>
 
 				<v-card-text style="overflow-y: auto;" class="scroll">
