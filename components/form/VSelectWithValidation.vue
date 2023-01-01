@@ -115,24 +115,7 @@ export default {
 			innerItems,
 			text
 		};
-	},
-	// data: () => ({
-	// 	innerItems: []
-	// }),
-	// watch: {
-	// 	// Handles external model changes.
-	// 	items(newVal) {
-	// 		this.innerItems = newVal;
-	// 	},
-	// },
-	// mounted() {
-	// 	if (this.items)
-	// 		this.innerItems = this.items;
-	// 	this.initValue(this.value);
-	// },
-	// methods: {
-	// 	text: (item) => item.displayName ? item.displayName : item.name,
-	// }
+	}
 };
 </script>
 

@@ -6,6 +6,10 @@
 		v-bind="$attrs"
 		auto-grow
 		clearable
+		:readonly="readonly"
+		:disabled="disabled"
+		:hint="$attrs.hint"
+		:label="$attrs.label"
 		@blur="blur"
 		@update:modelValue="change"
 	>
@@ -93,21 +97,7 @@ export default {
 			count,
 			countClass
 		};
-	},
-	// computed: {
-	// 	count() {
-	// 		return this.maxcount ? '(' + (this.innerValue ? this.innerValue.length : 0) + ')' : '';
-	// 	},
-	// 	countClass() {
-	// 		return (this.maxcount && !String.isNullOrEmpty(this.innerValue) ? this.innerValue.length > this.maxcount ? 'negative ' : '' : '') + 'title-body2';
-	// 	},
-	// 	errorI() {
-	// 		return this.validation ? this.validation[this.vid] ? this.validation[this.vid].$silentErrors.length > 0 : false : true;
-	// 	},
-	// 	errorsI() {
-	// 		return this.validation ? this.validation[this.vid] ? this.validation[this.vid].$silentErrors : [] : [];
-	// 	}
-	// }
+	}
 };
 </script>
 

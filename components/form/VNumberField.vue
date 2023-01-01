@@ -4,6 +4,7 @@
 		type="number"
 		:class="displayClass"
 		:readonly="readonly"
+		:disabled="disabled"
 		:hint="$attrs.hint"
 		:label="$attrs.label"
 		v-bind="$attrs"
@@ -80,21 +81,7 @@ export default {
 			initValue,
 			displayClass
 		};
-	},
-	// computed: {
-	// 	displayClass() {
-	// 		return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
-	// 	}
-	// },
-	// watch: {
-	// 	// Handles external model changes.
-	// 	value(newVal) {
-	// 		this.initValue(newVal);
-	// 	}
-	// },
-	// mounted() {
-	// 	this.initValue(this.value);
-	// }
+	}
 };
 </script>
 

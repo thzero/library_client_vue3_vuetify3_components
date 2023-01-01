@@ -4,7 +4,7 @@
 		:hide-details="hideDetails"
 		:success="valid"
 		v-bind="$attrs"
-		@update:modelValue="change"
+		@update:modelValue="innerValueUpdate"
 	>
 		<template v-slot:details>
 			<div
@@ -20,39 +20,59 @@
 </template>
 
 <script>
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtCheckboxWithValidation',
-	extends: baseControlEdit,
 	props: {
-		change: {
-			type: Function,
-			default: () => {}
-		}
+		...useBaseControlEditProps
 	},
-	setup (props) {
-		return Object.assign(baseControlEdit.setup(props), {
-		});
-	},
-	// watch: {
-	// 	// Handles internal model changes.
-	// 	// innerValue(newVal) {
-	// 	//	 this.$emit('input', newVal)
-	// 	// },
-	// 	// Handles external model changes.
-	// 	value(newVal) {
-	// 		this.initValue(newVal);
-	// 	}
-	// },
-	// mounted() {
-	// 	this.initValue(this.value);
-	// },
-	// methods: {
-	// 	validation() {
-	// 		return this.$refs.prv;
-	// 	}
-	// }
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		};
+	}
 };
 </script>
 

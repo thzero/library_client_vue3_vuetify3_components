@@ -152,26 +152,7 @@ export default {
 			isFullscreen,
 			internalItem
 		};
-	},
-	// data: () => ({
-	// 	internalItem: null,
-	// 	invalid: true
-	// ),
-	// computed: {
-	// 	fullscreenInternal() {
-	// 		return VuetifyUtility.fullscreen(this.$vuetify);
-	// 	}
-	// },
-	// watch: {
-	// 	// Handles external model changes.
-	// validation(value) {
-	// 		console.log('v.invalid: ' + value.$invalid);
-	// 		console.log('v.error: ' + value.$error);
-	// 		console.log('v.errors: ' + JSON.stringify(value));
-	// 		this.invalid = value.$invalid;
-	// 		console.log('v.invalid: ' + this.invalid);
-	// 	}
-	// }
+	}
 };
 </script>
 
