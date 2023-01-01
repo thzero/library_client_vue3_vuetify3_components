@@ -1,10 +1,13 @@
 <template>
 	<v-textarea
 		v-model="innerValue"
-		:readonly="readonly"
 		v-bind="$attrs"
 		auto-grow
 		clearable
+		:readonly="readonly"
+		:disabled="disabled"
+		:hint="$attrs.hint"
+		:label="$attrs.label"
 		@blur="blur"
 		@update:modelValue="change"
 	/>
@@ -68,16 +71,7 @@ export default {
 			innerValueUpdate,
 			initValue
 		};
-	},
-	// watch: {
-	// 	// Handles external model changes.
-	// 	modelValue(newVal) {
-	// 		this.initValue(newVal);
-	// 	}
-	// },
-	// mounted() {
-	// 	this.initValue(this.value);
-	// }
+	}
 };
 </script>
 

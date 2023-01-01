@@ -98,12 +98,7 @@ export default {
 			initValue,
 			displayClass
 		};
-	},
-	// computed: {
-	// 	displayClass() {
-	// 		return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
-	// 	},
-	// }
+	}
 };
 </script>
 

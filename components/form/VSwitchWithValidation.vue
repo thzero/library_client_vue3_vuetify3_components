@@ -2,9 +2,12 @@
 	<v-switch
 		v-model="innerValue"
 		:hide-details="hideDetails"
-		:label="$attrs.label"
+		:readonly="readonly"
 		:disabled="disabled"
+		:hint="$attrs.hint"
+		:label="$attrs.label"
 		density="compact"
+		:color="color"
 		@update:modelValue="change"
 	>
 		<template v-slot:details>
@@ -28,6 +31,10 @@ export default {
 	name: 'VtSwitchWithValidation',
 	props: {
 		...useBaseControlEditProps,
+		color: {
+			type: String,
+			default: 'primary'
+		}
 	},
 	setup (props, context) {
 		const {
@@ -73,16 +80,7 @@ export default {
 			initValue,
 			innerValueUpdate
 		};
-	},
-	// watch: {
-	// 	// Handles external model changes.
-	// 	value(newVal) {
-	// 		this.initValue(newVal);
-	// 	}
-	// },
-	// mounted() {
-	// 	this.initValue(this.value);
-	// }
+	}
 };
 </script>
 
