@@ -21,7 +21,7 @@
 				</div>
 				<div
 					v-if="!autoSave"
-					class="text-right"
+					class="mt-4 text-right"
 				>
 					<v-spacer />
 					<slot name="buttons_pre"/>
