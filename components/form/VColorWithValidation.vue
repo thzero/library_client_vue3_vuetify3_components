@@ -48,6 +48,10 @@ export default {
 	name: 'VtColorWithValidation',
 	props: {
 		...useBaseControlEditProps,
+		label: {
+			type: String,
+			default: null
+		},
 		maxWidth: {
 			type: String,
 			default: '300px'
