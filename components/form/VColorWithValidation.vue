@@ -21,6 +21,7 @@
 						:disabled="disabled"
 						show-swatches
 						swatches-max-height="20vh"
+						@update:modelValue="innerValueUpdate"
 					/>
 					<div
 						class="text-right mt-2"
