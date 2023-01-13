@@ -1,7 +1,7 @@
 <template>
 	<v-checkbox
 		v-model="innerValue"
-		:hide-details="hideDetails"
+		:hide-details="hideDetailsOverride"
 		v-bind="$attrs"
 		density="compact"
 		:readonly="readonly"
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
 import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
@@ -52,6 +54,10 @@ export default {
 			initValue
 		} = useBaseControlEditComponent(props, context);
 
+		const hideDetailsOverride = computed(() => {
+			return !props.hideDetails ? hideDetails : true
+		});
+
 		return {
 			correlationId,
 			error,
@@ -69,6 +75,7 @@ export default {
 			errorI,
 			errorsI,
 			hideDetails,
+			hideDetailsOverride,
 			innerValue,
 			innerValueUpdate,
 			initValue
