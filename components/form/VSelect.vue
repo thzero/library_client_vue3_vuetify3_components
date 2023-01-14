@@ -5,6 +5,7 @@
 		:item-text="text"
 		item-value="id"
 		:hide-details="hideDetails"
+		:readonly="readonly"
 		:label="$attrs.label"
 		:flat="flat"
 		:solo-inverted="soloInverted"
