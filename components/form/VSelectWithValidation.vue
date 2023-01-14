@@ -6,8 +6,9 @@
 		:item-value="itemValue"
 		:items="innerItems"
 		:hide-details="hideDetails"
-		:label="$attrs.label"
 		:multiple="multiple"
+		:readonly="readonly"
+		:label="$attrs.label"
       	density="compact"
 		@update:modelValue="innerValueUpdate"
 	>
