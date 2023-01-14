@@ -60,19 +60,19 @@ export default {
 		
 		const text = (item) => { 
 			return item.displayName ? item.displayName : item.name;
-		}
-		
-		onMounted(async () => {
-			if (props.items)
-				innerItems.value = props.items;
-			initValue(props.modelValue);
-		});
+		};
 
 		watch(() => props.items,
 			(value) => {
 				innerItems.value = value;
 			}
 		);
+		
+		onMounted(async () => {
+			if (props.items)
+				innerItems.value = props.items;
+			initValue(props.modelValue);
+		});
 
 		return {
 			correlationId,

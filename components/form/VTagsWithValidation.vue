@@ -78,12 +78,6 @@ export default {
 				context.emit('input', select.value);
 			});
 		};
-		
-		onMounted(async () => {
-			if (props.items)
-				innerItems.value = props.items;
-			initValue(props.modelValue);
-		});
 
 		watch(() => select,
 			(value) => {
@@ -93,6 +87,12 @@ export default {
 				nextTick(() => select.value.pop());
 			}
 		);
+		
+		onMounted(async () => {
+			if (props.items)
+				innerItems.value = props.items;
+			initValue(props.modelValue);
+		});
 
 		return {
 			
