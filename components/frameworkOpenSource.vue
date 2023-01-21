@@ -16,11 +16,10 @@ export function useFrameworkOpenSourceComponent(props, context, options) {
 		data,
 		dependenciesClient,
 		dependenciesServer,
-		// initializeDependenciesClientBase,
 		key,
 		serviceStore
 	} = useBaseOpenSourceComponent(props, context, Object.assign(options, {
-			initializeDependenciesClient: () => {
+			initializeDependenciesClientFramework: () => {
 				return [
 					{
 						category: 'client',
@@ -55,7 +54,6 @@ export function useFrameworkOpenSourceComponent(props, context, options) {
 		data,
 		dependenciesClient,
 		dependenciesServer,
-		// initializeDependenciesClientBase,
 		key,
 		serviceStore
 	};
