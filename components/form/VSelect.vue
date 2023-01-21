@@ -5,24 +5,22 @@
 		:item-text="text"
 		item-value="id"
 		:hide-details="hideDetails"
+		:readonly="readonly"
 		:label="$attrs.label"
 		:flat="flat"
 		:solo-inverted="soloInverted"
-		@change="change"
+		@update:modelValue="innerValueUpdate"
 	/>
 </template>
 
 <script>
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtSelect',
-	extends: baseControlEdit,
 	props: {
-		change: {
-			type: Function,
-			default: () => {}
-		},
+		...useBaseControlEditProps,
 		flat: {
 			type: Boolean,
 			default: false
@@ -36,30 +34,70 @@ export default {
 			default: false
 		}
 	},
-	setup (props) {
-		return Object.assign(baseControlEdit.setup(props), {
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			innerValueUpdate
+		} = useBaseControlEditComponent(props, context);
+		
+		const innerItems = ref([]);
+		
+		const text = (item) => { 
+			return item.displayName ? item.displayName : item.name;
+		};
+
+		watch(() => props.items,
+			(value) => {
+				innerItems.value = value;
+			}
+		);
+		
+		onMounted(async () => {
+			if (props.items)
+				innerItems.value = props.items;
+			initValue(props.modelValue);
 		});
-	},
-	data: () => ({
-		innerItems: []
-	}),
-	watch: {
-		// Handles external model changes.
-		items(newVal) {
-			this.innerItems = newVal;
-		},
-		// Handles external model changes.
-		value(newVal) {
-			this.initValue(newVal);
-		}
-	},
-	mounted() {
-		if (this.items)
-			this.innerItems = this.items;
-		this.initValue(this.value);
-	},
-	methods: {
-		text: (item) => item.displayName ? item.displayName : item.name
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			innerValueUpdate,
+			innerItems,
+			text
+		};
 	}
 };
 </script>

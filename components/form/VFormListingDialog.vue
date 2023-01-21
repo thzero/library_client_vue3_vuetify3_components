@@ -3,15 +3,15 @@
 		<v-dialog
 			v-model="dialogSignal"
 			persistent
-			:fullscreen="fullscreenInternal"
+			:fullscreen="isFullscreen"
 			@keydown.esc="handleClose"
 		>
 			<v-card
-				:style="!fullscreenInternal ? { maxWidth: maxWidth, width: width, margin: 'auto', } : {}"
+				:style="!isFullscreen ? { maxWidth: maxWidth, width: width, margin: 'auto', } : {}"
 			>
-		<!-- <div class="text-center">
-			 dirty: {{ dirty }} invalid: {{ invalid }} disabled: {{ disabled }} buttonOkDisabled: {{ buttonOkDisabled }}
-		</div> -->
+				<!-- <div class="text-center">
+					dirty: {{ dirty }} invalid: {{ invalid }} disabled: {{ disabled }} buttonOkDisabled: {{ buttonOkDisabled }}
+				</div> -->
 				<v-card-item>
 					<div class="text-center text-h5">{{ label }}</div>
 					<v-form>
@@ -24,6 +24,14 @@
 							{{ item }}
 						</div>
 					</v-form>
+					<v-snackbar
+						ref="notifyRef"
+						v-model="notifySignal"
+						:color="notifyColor"
+						:timeout="notifyTimeout"
+					>
+						{{ notifyMessage }}
+					</v-snackbar>
 				</v-card-item>
 
 				<v-card-text style="overflow-y: auto;" class="scroll">
@@ -42,63 +50,109 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
-		<VConfirmationDialog
-			v-if="buttonDelete"
-			:non-recoverable="nonRecoverable"
-			:signal="dialogDeleteConfirmSignal.signal"
-			@cancel="dialogDeleteConfirmSignal.cancelI()"
-			@ok="handleDeleteConfirmOk"
-		/>
 	</div>
 </template>
 
 <script>
-import { computed, getCurrentInstance, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
-import VuetifyUtility from '../../utility/index';
-
-import baseFormDialogControl from '@/library_vue/components/form/baseFormDialogControl';
-import VConfirmationDialog from '../VConfirmationDialog';
+import { useBaseFormDialogControlComponent } from '@/library_vue/components/form/baseFormDialogControl';
+import { baseFormDialogControlProps } from '@/library_vue/components/form/baseFormDialogControlProps';
+import { useDisplayComponent } from '@/library_vue_vuetify/components/display';
 
 export default {
 	name: 'VtFormListingDialog',
-	components: {
-		VConfirmationDialog
+	props: {
+		...baseFormDialogControlProps
 	},
-	extends: baseFormDialogControl,
-	setup (props) {
-		const instance = getCurrentInstance();
+	emits: ['close', 'ok', 'open'],
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			// buttonOkDisabled,
+			dialogHeightI,
+			dialogDeleteConfirmSignal,
+			dialogSignal,
+			dirty,
+			invalid,
+			handleClear,
+			handleClose,
+			handleDelete,
+			handleDeleteConfirmOk,
+			loading,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			onResize,
+			reset,
+			scrollableI,
+			scrollableHeightI,
+			setNotify,
+			submit
+		} = useBaseFormDialogControlComponent(props, context);
+
+		const display = useDisplayComponent();
 
 		const internalItem = ref(null);
 
-		const fullscreenInternal = computed(() => {
-			return VuetifyUtility.fullscreen(instance.ctx.$vuetify);
+		const isFullscreen = computed(() => {
+			return display.isFullscreen.value;
 		});
 
-		return Object.assign(baseFormDialogControl.setup(props), {
-			fullscreenInternal,
-			internalItem
+		const buttonOkDisabled = computed(() => {
+			return invalid.value;
 		});
-	},
-	// data: () => ({
-	// 	internalItem: null,
-	// 	invalid: true
-	// ),
-	// computed: {
-	// 	fullscreenInternal() {
-	// 		return VuetifyUtility.fullscreen(this.$vuetify);
-	// 	}
-	// },
-	// watch: {
-	// 	// Handles external model changes.
-	// validation(value) {
-	// 		console.log('v.invalid: ' + value.$invalid);
-	// 		console.log('v.error: ' + value.$error);
-	// 		console.log('v.errors: ' + JSON.stringify(value));
-	// 		this.invalid = value.$invalid;
-	// 		console.log('v.invalid: ' + this.invalid);
-	// 	}
-	// }
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			buttonOkDisabled,
+			dialogHeightI,
+			dialogDeleteConfirmSignal,
+			dialogSignal,
+			dirty,
+			invalid,
+			handleClear,
+			handleClose,
+			handleDelete,
+			handleDeleteConfirmOk,
+			loading,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			onResize,
+			reset,
+			scrollableI,
+			scrollableHeightI,
+			setNotify,
+			submit,
+			isFullscreen,
+			internalItem
+		};
+	}
 };
 </script>
 

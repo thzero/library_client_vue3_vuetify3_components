@@ -15,39 +15,44 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import base from '@/library_vue/components/base';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtTagsWithValidation',
-	extends: base,
 	props: {
-		change: {
-			type: Function,
-			default: () => {}
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		hideDetails: {
-			type: Boolean,
-			default: false
-		},
+		...useBaseControlEditProps,
 		max: {
 			type: [Number],
 			default: 5
-		},
-		readonly: {
-			type: Boolean,
-			default: false
 		}
 	},
-	setup (props) {
-		const instance = getCurrentInstance();
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
 
 		const items = ref([]);
 		const select = ref(props.modelValue ? props.modelValue : []);
@@ -62,34 +67,54 @@ export default {
 				if (String.isNullOrEmpty(search.value))
 					return;
 				select.value.push(...search.value.split(','));
-				instance.ctx.$nextTick(() => {
-					// this.$emit('input', this.search)
+				nextTick(() => {
+					// context.emit('input', this.search)
 					search.value = '';
 				});
 			});
 		};
 		const updateTags = () => {
-			instance.ctx.$nextTick(() => {
-				instance.ctx.$emit('input', select.value);
+			nextTick(() => {
+				context.emit('input', select.value);
 			});
 		};
-		
-		onMounted(async () => {
-			if (props.items)
-				innerItems.value = props.items;
-			instance.ctx.initValue(props.modelValue);
-		});
 
 		watch(() => select,
 			(value) => {
 				if (value.length <= props.max)
 					return;
 				// TODO: Check last entry to see if fits the rules...
-				instance.ctx.$nextTick(() => instance.ctx.select.pop());
+				nextTick(() => select.value.pop());
 			}
 		);
+		
+		onMounted(async () => {
+			if (props.items)
+				innerItems.value = props.items;
+			initValue(props.modelValue);
+		});
 
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue,
 			hint,
 			items,
 			paste,
@@ -97,47 +122,8 @@ export default {
 			select,
 			text,
 			updateTags
-		});
-	},
-	// data: () => ({
-	// 		select: [],
-	// 		items: [],
-	// 		search: '' //sync search
-	// }),
-	// computed: {
-	// 	hint() {
-	// 		return GlobalUtility.$trans.t('errors.tagLine.max', { max: this.max });
-	// 	}
-	// },
-	// watch: {
-	// 	select(val) {
-	// 		if (val.length <= this.max)
-	// 			return;
-	// 		// TODO: Check last entry to see if fits the rules...
-	// 		this.$nextTick(() => this.select.pop());
-	// 	}
-	// },
-	// created() {
-	// 	this.select = this.value ? this.value : [];
-	// },
-	// methods: {
-	// 	paste() {
-	// 		this.$nextTick(() => {
-	// 			if (String.isNullOrEmpty(this.search))
-	// 				return;
-	// 			this.select.push(...this.search.split(','));
-	// 			this.$nextTick(() => {
-	// 				// this.$emit('input', this.search)
-	// 				this.search = '';
-	// 			});
-	// 		});
-	// 	},
-	// 	updateTags() {
-	// 		this.$nextTick(() => {
-	// 			this.$emit('input', this.select);
-	// 		});
-	// 	}
-	// }
+		};
+	}
 };
 </script>
 

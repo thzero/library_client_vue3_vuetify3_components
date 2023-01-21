@@ -6,10 +6,11 @@
 		:item-value="itemValue"
 		:items="innerItems"
 		:hide-details="hideDetails"
-		:label="$attrs.label"
 		:multiple="multiple"
+		:readonly="readonly"
+		:label="$attrs.label"
       	density="compact"
-		@update:modelValue="change"
+		@update:modelValue="innerValueUpdate"
 	>
 		<template v-slot:details>
 			<div
@@ -17,30 +18,23 @@
 				:key="error.$uid"
 			>
 				<strong>{{ error.$message }}</strong>
-				<small> on </small>
-				<strong>{{ error.$property }}</strong>
+				<!--<small> on </small>
+				<strong>{{ error.$property }}</strong>-->
 			</div>
 		</template>
 	</v-select>
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtSelectWithValidation',
-	extends: baseControlEdit,
 	props: {
-		change: {
-			type: Function,
-			default: () => {}
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
+		...useBaseControlEditProps,
 		items: {
 			type: [Object, Array],
 			default: null
@@ -56,15 +50,31 @@ export default {
 		multiple: {
 			type: Boolean,
 			default: false
-		},
-		readonly: {
-			type: Boolean,
-			default: false
 		}
 	},
-	setup (props) {
-		const instance = getCurrentInstance();
-
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			innerValueUpdate
+		} = useBaseControlEditComponent(props, context);
+		
 		const innerItems = ref([]);
 		
 		const text = (item) => { 
@@ -74,7 +84,7 @@ export default {
 		onMounted(async () => {
 			if (props.items)
 				innerItems.value = props.items;
-			instance.ctx.initValue(props.modelValue);
+			initValue(props.modelValue);
 		});
 
 		watch(() => props.items,
@@ -83,28 +93,30 @@ export default {
 			}
 		);
 
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			innerValueUpdate,
 			innerItems,
 			text
-		});
-	},
-	// data: () => ({
-	// 	innerItems: []
-	// }),
-	// watch: {
-	// 	// Handles external model changes.
-	// 	items(newVal) {
-	// 		this.innerItems = newVal;
-	// 	},
-	// },
-	// mounted() {
-	// 	if (this.items)
-	// 		this.innerItems = this.items;
-	// 	this.initValue(this.value);
-	// },
-	// methods: {
-	// 	text: (item) => item.displayName ? item.displayName : item.name,
-	// }
+		};
+	}
 };
 </script>
 

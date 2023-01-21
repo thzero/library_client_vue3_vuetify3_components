@@ -8,7 +8,6 @@
 			<template v-slot:prepend>
 				<v-app-bar-nav-icon
 					class="hidden-md-and-up"
-					@click.stop="toggleDrawer"
 				>
 				</v-app-bar-nav-icon>
 			</template>
@@ -35,7 +34,8 @@
 </template>
 
 <script>
-import baseLayout from '@/library_vue/layouts/baseLayout';
+// import baseLayout from '@/library_vue/layouts/baseLayout';
+import { useBaseLayout } from '@/library_vue/layouts/baseLayout';
 
 import VLayoutFooter from '@/library_vue_vuetify/components/VLayoutFooter';
 
@@ -45,11 +45,33 @@ export default {
 		VLayoutFooter,
 		// VVersion
 	},
-	extends: baseLayout,
-	setup(props) {
-		return Object.assign(baseLayout.setup(props), {
-		});
-	},
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			features
+		} = useBaseLayout(props, context);
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			features
+		}
+	}
 };
 </script>
 

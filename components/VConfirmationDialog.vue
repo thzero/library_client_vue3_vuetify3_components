@@ -42,35 +42,70 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue';
+import { computed } from 'vue';
 
+import GlobalUtility from '@thzero/library_client/utility/global';
 import VueUtility from '@thzero/library_client_vue3/utility/index';
 
-import baseConfirmationDialog from '@/library_vue/components/baseConfirmationDialog';
+import { useBaseConfirmationDialogComponent } from '@/library_vue/components/baseConfirmationDialogComponent';
+import { baseConfirmationDialogProps } from '@/library_vue/components/baseConfirmationDialogProps';
 
 export default {
 	name: 'VtConfirmationDialog',
-	extends: baseConfirmationDialog,
-	setup(props) {
-		const instance = getCurrentInstance();
+	props: {
+		...baseConfirmationDialogProps
+	},
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dialogCancel,
+			dialogOk,
+			dialogSignal,
+			handleError,
+			internalItem
+		} = useBaseConfirmationDialogComponent(
+			props,
+			context,
+			{
+				handleErrorI: (response, correlationId) => {
+					VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
+				}
+			}
+		);
 
-		const handleError = (response, correlationId) => {
-			VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
-		}
+		// const handleError = (response, correlationId) => {
+		// 	VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
+		// }
 
 		const internalMessage = computed(() => {
-			return props.message ? props.message : props.nonRecoverable ? instance.ctx.$t('questions.areYouSureNonRecoverable') : instance.ctx.$t('questions.areYouSure')
+			return props.message ? props.message : props.nonRecoverable ? GlobalUtility.$trans.t('questions.areYouSureNonRecoverable') : GlobalUtility.$trans.t('questions.areYouSure')
 		});
 
-		return Object.assign(baseConfirmationDialog.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dialogCancel,
+			dialogOk,
+			dialogSignal,
 			handleError,
+			internalItem,
 			internalMessage
-		});
-	},
-	// methods: {
-	// 	handleError(response, correlationId) {
-	// 		VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
-	// 	}
-	// }
+		};
+	}
 };
 </script>

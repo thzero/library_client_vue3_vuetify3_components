@@ -1,6 +1,6 @@
 <template>
 	<v-btn
-		ref="btnOpen"
+		ref="btnOpenRef"
 		:color="innerValue"
 		@click="open"
 		style="width:100%;"
@@ -21,6 +21,7 @@
 						:disabled="disabled"
 						show-swatches
 						swatches-max-height="20vh"
+						@update:modelValue="innerValueUpdate"
 					/>
 					<div
 						class="text-right mt-2"
@@ -41,26 +42,45 @@
 <script>
 import { computed, ref } from 'vue';
 
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtColorWithValidation',
-	extends: baseControlEdit,
 	props: {
-		disabled: {
-			type: Boolean,
-			default: false
-		},
+		...useBaseControlEditProps,
 		label: {
 			type: String,
-			default: ''
+			default: null
 		},
 		maxWidth: {
 			type: String,
 			default: '300px'
 		}
 	},
-	setup (props) {
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
+		
 		const dialogSignal = ref(false);
 
 		const buttonColor = computed(() => {
@@ -74,22 +94,32 @@ export default {
 			dialogSignal.value = false;
 		};
 
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue,
 			buttonColor,
 			close,
 			dialogSignal,
 			open
-		});
-	},
-	// watch: {
-	// 	// Handles external model changes.
-	// 	value(newVal) {
-	// 		this.initValue(newVal);
-	// 	}
-	// },
-	// mounted() {
-	// 	this.initValue(this.value);
-	// }
+		};
+	}
 };
 </script>
 

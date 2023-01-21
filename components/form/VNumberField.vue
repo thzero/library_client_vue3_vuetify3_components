@@ -4,6 +4,7 @@
 		type="number"
 		:class="displayClass"
 		:readonly="readonly"
+		:disabled="disabled"
 		:hint="$attrs.hint"
 		:label="$attrs.label"
 		v-bind="$attrs"
@@ -15,52 +16,72 @@
 <script>
 import { computed } from 'vue';
 
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtNumberField',
-	extends: baseControlEdit,
 	props: {
+		...useBaseControlEditProps,
 		blur: {
-			type: Function,
-			default: () => {}
-		},
-		change: {
 			type: Function,
 			default: () => {}
 		},
 		negativeColor: {
 			type: Boolean,
 			default: false
-		},
-		readonly: {
-			type: Boolean,
-			default: false
 		}
 	},
-	setup (props) {
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
+
 		const displayClass = computed(() => {
 			return props.negativeColor ? (innerValue.value < 0 ? 'text-negative' : null) : null;
 		});
 		
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue,
 			displayClass
-		});
-	},
-	// computed: {
-	// 	displayClass() {
-	// 		return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
-	// 	}
-	// },
-	// watch: {
-	// 	// Handles external model changes.
-	// 	value(newVal) {
-	// 		this.initValue(newVal);
-	// 	}
-	// },
-	// mounted() {
-	// 	this.initValue(this.value);
-	// }
+		};
+	}
 };
 </script>
 

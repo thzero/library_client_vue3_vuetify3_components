@@ -6,6 +6,10 @@
 		v-bind="$attrs"
 		auto-grow
 		clearable
+		:readonly="readonly"
+		:disabled="disabled"
+		:hint="$attrs.hint"
+		:label="$attrs.label"
 		@blur="blur"
 		@update:modelValue="change"
 	>
@@ -18,8 +22,8 @@
 				:key="error.$uid"
 			>
 				<strong>{{ error.$message }}</strong>
-				<small> on </small>
-				<strong>{{ error.$property }}</strong>
+				<!--<small> on </small>
+				<strong>{{ error.$property }}</strong>-->
 			</div>
 		</template>
 	</v-textarea>
@@ -28,22 +32,41 @@
 <script>
 import { computed } from 'vue';
 
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtTextAreaWithValidation',
-	extends: baseControlEdit,
 	props: {
+		...useBaseControlEditProps,
 		blur: {
-			type: Function,
-			default: () => {}
-		},
-		change: {
 			type: Function,
 			default: () => {}
 		}
 	},
-	setup (props) {
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
+
 		const count = computed(() => {
 			return props.maxcount ? '(' + (innerValue.value ? innerValue.value.length : 0) + ')' : '';
 		});
@@ -51,25 +74,30 @@ export default {
 			return (props.maxcount && !String.isNullOrEmpty(innerValu.value) ? innerValue.value.length > props.maxcount ? 'negative ' : '' : '') + 'title-body2';
 		});
 		
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue,
 			count,
 			countClass
-		});
-	},
-	// computed: {
-	// 	count() {
-	// 		return this.maxcount ? '(' + (this.innerValue ? this.innerValue.length : 0) + ')' : '';
-	// 	},
-	// 	countClass() {
-	// 		return (this.maxcount && !String.isNullOrEmpty(this.innerValue) ? this.innerValue.length > this.maxcount ? 'negative ' : '' : '') + 'title-body2';
-	// 	},
-	// 	errorI() {
-	// 		return this.validation ? this.validation[this.vid] ? this.validation[this.vid].$silentErrors.length > 0 : false : true;
-	// 	},
-	// 	errorsI() {
-	// 		return this.validation ? this.validation[this.vid] ? this.validation[this.vid].$silentErrors : [] : [];
-	// 	}
-	// }
+		};
+	}
 };
 </script>
 

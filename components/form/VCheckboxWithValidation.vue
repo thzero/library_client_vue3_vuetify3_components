@@ -1,10 +1,11 @@
 <template>
 	<v-checkbox
 		v-model="innerValue"
-		:hide-details="hideDetails"
-		:success="valid"
+		:hide-details="hideDetailsOverride"
 		v-bind="$attrs"
-		@update:modelValue="change"
+		density="compact"
+		:readonly="readonly"
+		@update:modelValue="innerValueUpdate"
 	>
 		<template v-slot:details>
 			<div
@@ -12,47 +13,74 @@
 				:key="error.$uid"
 			>
 				<strong>{{ error.$message }}</strong>
-				<small> on </small>
-				<strong>{{ error.$property }}</strong>
+				<!--<small> on </small>
+				<strong>{{ error.$property }}</strong>-->
 			</div>
 		</template>
 	</v-checkbox>
 </template>
 
 <script>
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { computed } from 'vue';
+
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtCheckboxWithValidation',
-	extends: baseControlEdit,
 	props: {
-		change: {
-			type: Function,
-			default: () => {}
-		}
+		...useBaseControlEditProps
 	},
-	setup (props) {
-		return Object.assign(baseControlEdit.setup(props), {
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		} = useBaseControlEditComponent(props, context);
+
+		const hideDetailsOverride = computed(() => {
+			return !props.hideDetails ? hideDetails : true
 		});
-	},
-	// watch: {
-	// 	// Handles internal model changes.
-	// 	// innerValue(newVal) {
-	// 	//	 this.$emit('input', newVal)
-	// 	// },
-	// 	// Handles external model changes.
-	// 	value(newVal) {
-	// 		this.initValue(newVal);
-	// 	}
-	// },
-	// mounted() {
-	// 	this.initValue(this.value);
-	// },
-	// methods: {
-	// 	validation() {
-	// 		return this.$refs.prv;
-	// 	}
-	// }
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			hideDetailsOverride,
+			innerValue,
+			innerValueUpdate,
+			initValue
+		};
+	}
 };
 </script>
 
