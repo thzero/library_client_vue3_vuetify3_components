@@ -18,7 +18,7 @@ export function useFrameworkOpenSourceComponent(props, context, options) {
 		dependenciesServer,
 		key,
 		serviceStore
-	} = useBaseOpenSourceComponent(props, context, Object.assign(options, {
+	} = useBaseOpenSourceComponent(props, context, Object.assign({
 			initializeDependenciesClientFramework: () => {
 				return [
 					{
@@ -37,8 +37,7 @@ export function useFrameworkOpenSourceComponent(props, context, options) {
 					}
 				];
 			}
-		})
-	);
+		}, {}));
 
 	return {
 		correlationId,
