@@ -67,4 +67,21 @@ export default {
 		margin: revert;
 		padding: revert; /* Padding is what gives the indentation */
 	}
+	.markdown h1 {
+		text-align: left;
+		margin-bottom: 24px;
+		text-align: center;
+	}
+	.markdown h2 {
+		text-align: left;
+		margin-bottom: 24px;
+	}
+	.markdown h3 {
+		text-align: left;
+		margin-bottom: 24px;
+	}
+	.markdown p {
+		text-align: left;
+		margin-bottom: 24px;
+	}
 </style>
