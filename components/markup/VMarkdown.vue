@@ -1,6 +1,13 @@
 <template>
 	<!-- eslint-disable vue/no-v-html -->
 	<div
+		v-if="tag==='div'"
+		:class="markdownClass"
+		style="background-color: transparent"
+		v-html="display"
+	/>
+	<span
+		v-if="tag==='span'"
 		:class="markdownClass"
 		style="background-color: transparent"
 		v-html="display"
