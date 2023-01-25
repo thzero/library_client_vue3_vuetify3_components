@@ -55,7 +55,7 @@ export default {
 		} = useBaseControlEditComponent(props, context);
 
 		const hideDetailsOverride = computed(() => {
-			return !props.hideDetails ? hideDetails : true
+			return !hideDetails.value ? hideDetails.value : true
 		});
 
 		return {
