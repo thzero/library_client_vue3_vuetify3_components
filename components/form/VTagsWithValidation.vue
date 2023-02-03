@@ -17,7 +17,7 @@
 <script>
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
-import GlobalUtility from '@thzero/library_client/utility/global';
+import LibraryClientUtility from '@thzero/library_client/utility/index';
 
 import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
 import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
@@ -59,7 +59,7 @@ export default {
 		const search = ref('');
 		
 		const hint = computed((item) => { 
-			return GlobalUtility.$trans.t('errors.tagLine.max', { max: props.max });
+			return LibraryClientUtility.$trans.t('errors.tagLine.max', { max: props.max });
 		});
 
 		const paste = () => {
