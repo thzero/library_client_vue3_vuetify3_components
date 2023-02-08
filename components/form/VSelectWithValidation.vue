@@ -50,6 +50,10 @@ export default {
 		multiple: {
 			type: Boolean,
 			default: false
+		},
+		vidOverride: {
+			type: String,
+			default: null
 		}
 	},
 	setup (props, context) {
@@ -73,7 +77,9 @@ export default {
 			innerValue,
 			initValue,
 			innerValueUpdate
-		} = useBaseControlEditComponent(props, context);
+		} = useBaseControlEditComponent(props, context, {
+			vidOverride: props.vidOverride
+		});
 		
 		const innerItems = ref([]);
 		
