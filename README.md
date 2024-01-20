@@ -4,7 +4,7 @@
 
 ### Installation
 
-Include as a submodule namned 'library_vue_vuetify' in the Vue application's source folder.
+Include as a submodule named 'library_vue_vuetify' in the Vue application's source folder.
 
 ```
 git submodule add https://github.com/thzero/library_client_vue_vuetify "src/library_vue_vuetify"
