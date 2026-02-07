@@ -2,7 +2,8 @@
 import LibraryClientConstants from '@thzero/library_client/constants';
 
 import LibraryClientUtility from '@thzero/library_client/utility/index';
-import LIbraryCommonUtility from '@thzero/library_common/utility';
+import LibraryCommonUtility from '@thzero/library_common/utility/index';
+import LibraryMomentUtility from '@thzero/library_common/utility/moment';
 
 import NotImplementedError from '@thzero/library_common/errors/notImplemented';
 
@@ -97,11 +98,11 @@ export default {
 		},
 		async resetDialog(correlationId, value) {
 			// forces random key gen so that the editor gets reset for each new item
-			this.randomKey = LIbraryCommonUtility.randomKeyGen();
+			this.randomKey = LibraryCommonUtility.randomKeyGen();
 			if (value) {
 				const temp = this.clone(value);
-				temp.timestamp = temp.timestamp ? LIbraryCommonUtility.convertTimestampToLocal(temp.timestamp).valueOf() : LIbraryCommonUtility.getTimestampLocal().valueOf();
-				temp.updatedTimestamp = temp.updatedTimestamp ? temp.updatedTimestamp : LIbraryCommonUtility.getTimestamp();
+				temp.timestamp = temp.timestamp ? LibraryMomentUtility.convertTimestampToLocal(temp.timestamp).valueOf() : LibraryMomentUtility.getTimestampLocal().valueOf();
+				temp.updatedTimestamp = temp.updatedTimestamp ? temp.updatedTimestamp : LibraryMomentUtility.getTimestamp();
 				this.gameSystemId = temp.gameSystemId;
 				await this.resetDialogI(correlationId, temp);
 				this.innerValue = temp;
